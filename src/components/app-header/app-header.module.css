@@ -1,0 +1,43 @@
+.header {
+  width: 100%;
+  background-color: var(--modal-bg);
+}
+
+.header__content {
+  width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header__nav {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header__logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+
+.header__btn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.header__btn.disabled {
+  cursor: not-allowed;
+}
+
+@media (max-width: 1279.89px) {
+  .header__content {
+    width: 100%;
+  }
+}
