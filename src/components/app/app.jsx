@@ -1,6 +1,6 @@
-import AppHeader from "../components/app-header";
-import BurgerIngredients from "../components/burger-ingredients";
-import { data } from "../utils/data";
+import AppHeader from "../app-header";
+import BurgerIngredients from "../burger-ingredients";
+import { data } from "../../utils/data";
 import styles from "./app.module.css";
 
 function App() {
