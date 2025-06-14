@@ -1,6 +1,8 @@
 :root {
   --bg: #131316;
   --modal-bg: #1c1c21;
+  --dark-grey: #8585ad;
+  --input: #2f2f37;
 }
 
 html,
@@ -14,6 +16,7 @@ body,
   flex-direction: column;
   background-color: var(--bg);
   box-sizing: border-box;
+  scrollbar-color: var(--dark-grey) var(--input);
 }
 
 body {

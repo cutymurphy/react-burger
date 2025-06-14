@@ -1,0 +1,26 @@
+.ingredients {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.ingredients__list {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.ingredients__section {
+  display: flex;
+  flex-direction: column;
+}
+
+.ingredients_grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px 24px;
+  list-style: none;
+  margin-top: 0;
+}
