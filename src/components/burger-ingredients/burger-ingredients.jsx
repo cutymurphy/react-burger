@@ -30,7 +30,7 @@ function BurgerIngredients({ ingredients }) {
   };
 
   return (
-    <section className={`${styles.ingredients} mt-10 mb-10`}>
+    <section className={`${styles.ingredients} mt-10 mb-10 mr-10`}>
       <p className="text text_type_main-large mb-5">Соберите бургер</p>
       <nav style={{ display: "flex" }} className="mb-10">
         <Tab value="bun" active={current === "bun"} onClick={handleTabClick}>
@@ -91,7 +91,7 @@ BurgerIngredients.propTypes = {
       image_large: PropTypes.string,
       __v: PropTypes.number,
     })
-  ),
+  ).isRequired,
 };
 
 export default BurgerIngredients;

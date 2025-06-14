@@ -1,0 +1,82 @@
+.constructor {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
+
+.constructor__container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.constructor__element {
+  flex-grow: 0;
+}
+
+.constructor__list {
+  max-height: calc(
+    5 * var(--constructor-element-height) + 4 * var(--constructor-elements-gap)
+  );
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.constructor__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.constructor__drag {
+  cursor: pointer;
+}
+
+.constructor__order {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.constructor__currency {
+  width: 36px;
+  height: auto;
+}
+
+@media (max-height: 960px) {
+  .constructor__list {
+    max-height: calc(
+      4 * var(--constructor-element-height) + 3 *
+        var(--constructor-elements-gap)
+    );
+  }
+}
+
+@media (max-height: 870px) {
+  .constructor__list {
+    max-height: calc(
+      3 * var(--constructor-element-height) + 2 *
+        var(--constructor-elements-gap)
+    );
+  }
+}
+
+@media (max-height: 780px) {
+  .constructor__list {
+    max-height: calc(
+      2 * var(--constructor-element-height) + var(--constructor-elements-gap)
+    );
+  }
+}
+
+@media (max-height: 690px) {
+  .constructor__list {
+    max-height: unset;
+  }
+}
