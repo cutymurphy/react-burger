@@ -6,6 +6,7 @@ import {
   CurrencyIcon,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { IngredientType } from "../../utils/types";
 
 function BurgerConstructor({ ingredients, mainBunId, selectedIngredientsIds }) {
   const mainBun = ingredients.find((item) => item._id === mainBunId);
@@ -68,22 +69,7 @@ function BurgerConstructor({ ingredients, mainBunId, selectedIngredientsIds }) {
 }
 
 BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string,
-      name: PropTypes.string,
-      type: PropTypes.string,
-      proteins: PropTypes.number,
-      fat: PropTypes.number,
-      carbohydrates: PropTypes.number,
-      calories: PropTypes.number,
-      price: PropTypes.number,
-      image: PropTypes.string,
-      image_mobile: PropTypes.string,
-      image_large: PropTypes.string,
-      __v: PropTypes.number,
-    })
-  ).isRequired,
+  ingredients: PropTypes.arrayOf(IngredientType).isRequired,
   mainBunId: PropTypes.string.isRequired,
   selectedIngredientsIds: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
