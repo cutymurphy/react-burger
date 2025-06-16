@@ -16,7 +16,12 @@ function App() {
   useEffect(() => {
     const getIngredientsData = async () => {
       fetch(apiIngredients)
-        .then((res) => res.json())
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          }
+          return Promise.reject(`Ошибка ${res.status}`);
+        })
         .then((data) =>
           setTimeout(() => {
             setState((prev) => ({
@@ -59,7 +64,7 @@ function App() {
             ingredients={state.ingredients}
             mainBunId={state.ingredients[0]._id}
             selectedIngredientsIds={[
-              "643d69a5c3f7b9001cfa093c",
+              "643d69a5c3f7b9001cfa093f",
               "643d69a5c3f7b9001cfa0941",
               "643d69a5c3f7b9001cfa093e",
               "643d69a5c3f7b9001cfa0942",

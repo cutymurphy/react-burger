@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 
 const modalRoot = document.getElementById("modals-root");
 
-function Modal({ children, isOpen, onClose, title }) {
+function Modal({ children, onClose, title }) {
   useEffect(() => {
     const handleEsc = (event) => {
       if (event.key === "Escape") {
@@ -15,16 +15,11 @@ function Modal({ children, isOpen, onClose, title }) {
       }
     };
 
-    if (isOpen) {
-      document.addEventListener("keydown", handleEsc);
-    }
-
+    document.addEventListener("keydown", handleEsc);
     return () => {
       document.removeEventListener("keydown", handleEsc);
     };
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
+  }, [onClose]);
 
   return createPortal(
     <ModalOverlay onClick={onClose}>
@@ -46,7 +41,6 @@ function Modal({ children, isOpen, onClose, title }) {
 
 Modal.propTypes = {
   children: PropTypes.node.isRequired,
-  isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   title: PropTypes.string,
 };

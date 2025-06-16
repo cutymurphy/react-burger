@@ -5,6 +5,7 @@ import BurgerIngredient from "../burger-ingredient/burger-ingredient";
 import PropTypes from "prop-types";
 import { IngredientType } from "../../utils/types";
 import IngredientDetails from "../ingredient-details";
+import Modal from "../modal";
 
 function BurgerIngredients({ ingredients }) {
   const [current, setCurrent] = useState("bun");
@@ -86,11 +87,9 @@ function BurgerIngredients({ ingredients }) {
         ))}
       </div>
       {selectedIngredient && (
-        <IngredientDetails
-          selectedIngredient={selectedIngredient}
-          isModalOpen={!!selectedIngredient}
-          closeModal={onIngredientClose}
-        />
+        <Modal title="Детали ингредиента" onClose={onIngredientClose}>
+          <IngredientDetails selectedIngredient={selectedIngredient} />
+        </Modal>
       )}
     </section>
   );

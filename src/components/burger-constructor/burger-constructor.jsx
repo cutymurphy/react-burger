@@ -10,6 +10,7 @@ import { IngredientType } from "../../utils/types";
 import { useState } from "react";
 import IngredientDetails from "../ingredient-details";
 import OrderDetails from "../order-details";
+import Modal from "../modal";
 
 function BurgerConstructor({ ingredients, mainBunId, selectedIngredientsIds }) {
   const [selectedIngredient, setSelectedIngredient] = useState(null);
@@ -101,16 +102,15 @@ function BurgerConstructor({ ingredients, mainBunId, selectedIngredientsIds }) {
         </Button>
       </footer>
       {selectedIngredient && (
-        <IngredientDetails
-          selectedIngredient={selectedIngredient}
-          isModalOpen={!!selectedIngredient}
-          closeModal={onIngredientClose}
-        />
+        <Modal title="Детали ингредиента" onClose={onIngredientClose}>
+          <IngredientDetails selectedIngredient={selectedIngredient} />
+        </Modal>
       )}
-      <OrderDetails
-        isModalOpen={isOrderModalOpen}
-        closeModal={onOrderModalClose}
-      />
+      {isOrderModalOpen && (
+        <Modal onClose={onOrderModalClose}>
+          <OrderDetails />
+        </Modal>
+      )}
     </section>
   );
 }
