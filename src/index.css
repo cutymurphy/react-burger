@@ -3,6 +3,8 @@
   --modal-bg: #1c1c21;
   --dark-grey: #8585ad;
   --input: #2f2f37;
+  --modal-overlay: #00000099;
+  --modal-border: #4c4cff33;
 
   --constructor-element-height: 80px;
   --constructor-elements-gap: 10px;
