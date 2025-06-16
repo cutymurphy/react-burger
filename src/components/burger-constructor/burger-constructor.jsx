@@ -9,9 +9,11 @@ import {
 import { IngredientType } from "../../utils/types";
 import { useState } from "react";
 import IngredientDetails from "../ingredient-details";
+import OrderDetails from "../order-details";
 
 function BurgerConstructor({ ingredients, mainBunId, selectedIngredientsIds }) {
   const [selectedIngredient, setSelectedIngredient] = useState(null);
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
 
   const mainBun = ingredients.find((item) => item._id === mainBunId);
   const selectedIngredients = selectedIngredientsIds.map((id) =>
@@ -27,6 +29,14 @@ function BurgerConstructor({ ingredients, mainBunId, selectedIngredientsIds }) {
 
   const onIngredientClose = () => {
     setSelectedIngredient(null);
+  };
+
+  const onOrderModalOpen = () => {
+    setIsOrderModalOpen(true);
+  };
+
+  const onOrderModalClose = () => {
+    setIsOrderModalOpen(false);
   };
 
   return (
@@ -81,7 +91,12 @@ function BurgerConstructor({ ingredients, mainBunId, selectedIngredientsIds }) {
           type="primary"
           className={`${styles.constructor__currency} mr-10`}
         />
-        <Button htmlType="button" type="primary" size="large">
+        <Button
+          htmlType="button"
+          type="primary"
+          size="large"
+          onClick={onOrderModalOpen}
+        >
           Оформить заказ
         </Button>
       </footer>
@@ -92,6 +107,10 @@ function BurgerConstructor({ ingredients, mainBunId, selectedIngredientsIds }) {
           closeModal={onIngredientClose}
         />
       )}
+      <OrderDetails
+        isModalOpen={isOrderModalOpen}
+        closeModal={onOrderModalClose}
+      />
     </section>
   );
 }
