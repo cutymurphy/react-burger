@@ -1,5 +1,7 @@
+import { IngredientType } from "../../utils/types";
 import Modal from "../modal";
 import styles from "./ingredient-details.module.css";
+import PropTypes from "prop-types";
 
 function IngredientDetails({ selectedIngredient, isModalOpen, closeModal }) {
   return (
@@ -51,5 +53,11 @@ function IngredientDetails({ selectedIngredient, isModalOpen, closeModal }) {
     </Modal>
   );
 }
+
+IngredientDetails.propTypes = {
+  selectedIngredient: IngredientType.isRequired,
+  isModalOpen: PropTypes.bool.isRequired,
+  closeModal: PropTypes.func.isRequired,
+};
 
 export default IngredientDetails;

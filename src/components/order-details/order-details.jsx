@@ -2,6 +2,7 @@ import { orderData } from "../../utils/order";
 import Modal from "../modal";
 import styles from "./order-details.module.css";
 import orderCheckImage from "../../images/order-check.png";
+import PropTypes from "prop-types";
 
 function OrderDetails({ isModalOpen, closeModal }) {
   return (
@@ -27,5 +28,10 @@ function OrderDetails({ isModalOpen, closeModal }) {
     </Modal>
   );
 }
+
+OrderDetails.propTypes = {
+  isModalOpen: PropTypes.bool.isRequired,
+  closeModal: PropTypes.func.isRequired,
+};
 
 export default OrderDetails;

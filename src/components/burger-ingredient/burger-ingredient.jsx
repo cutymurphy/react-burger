@@ -4,6 +4,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredient.module.css";
 import { IngredientType } from "../../utils/types";
+import PropTypes from "prop-types";
 
 function BurgerIngredient({ ingredient, onClick }) {
   return (
@@ -33,6 +34,7 @@ function BurgerIngredient({ ingredient, onClick }) {
 
 BurgerIngredient.propTypes = {
   ingredient: IngredientType.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default BurgerIngredient;

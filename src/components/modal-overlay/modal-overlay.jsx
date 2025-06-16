@@ -1,4 +1,5 @@
 import styles from "./modal-overlay.module.css";
+import PropTypes from "prop-types";
 
 function ModalOverlay({ children, onClick }) {
   return (
@@ -7,5 +8,10 @@ function ModalOverlay({ children, onClick }) {
     </div>
   );
 }
+
+ModalOverlay.propTypes = {
+  children: PropTypes.node.isRequired,
+  onClick: PropTypes.func.isRequired,
+};
 
 export default ModalOverlay;
