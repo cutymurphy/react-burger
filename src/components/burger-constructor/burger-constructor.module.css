@@ -12,6 +12,11 @@
 }
 
 .constructor__element {
+  cursor: pointer;
+  flex: 1;
+}
+
+.constructor__element_locked {
   flex-grow: 0;
 }
 

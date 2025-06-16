@@ -1,0 +1,19 @@
+.details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 40px;
+}
+
+.details__characteristics {
+  display: flex;
+  align-items: center;
+  margin-top: 0;
+}
+
+.details__characteristic {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+}

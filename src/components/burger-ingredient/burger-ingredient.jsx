@@ -5,9 +5,9 @@ import {
 import styles from "./burger-ingredient.module.css";
 import { IngredientType } from "../../utils/types";
 
-function BurgerIngredient({ ingredient }) {
+function BurgerIngredient({ ingredient, onClick }) {
   return (
-    <article className={styles.ingredient}>
+    <article className={styles.ingredient} onClick={onClick}>
       <img
         alt={ingredient.name}
         src={ingredient.image}

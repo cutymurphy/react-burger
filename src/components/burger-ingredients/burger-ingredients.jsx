@@ -4,9 +4,11 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
 import PropTypes from "prop-types";
 import { IngredientType } from "../../utils/types";
+import IngredientDetails from "../ingredient-details";
 
 function BurgerIngredients({ ingredients }) {
   const [current, setCurrent] = useState("bun");
+  const [selectedIngredient, setSelectedIngredient] = useState(null);
 
   const groupedIngredients = useMemo(
     () => ({
@@ -28,6 +30,14 @@ function BurgerIngredients({ ingredients }) {
     if (refs[value].current) {
       refs[value].current.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const onIngredientClick = (ingredient) => {
+    setSelectedIngredient(ingredient);
+  };
+
+  const onIngredientClose = () => {
+    setSelectedIngredient(null);
   };
 
   return (
@@ -65,13 +75,23 @@ function BurgerIngredients({ ingredients }) {
             <ul className={`${styles.ingredients_grid} pl-4 pr-4 mb-10`}>
               {items.map((item) => (
                 <li key={item._id}>
-                  <BurgerIngredient ingredient={item} />
+                  <BurgerIngredient
+                    ingredient={item}
+                    onClick={() => onIngredientClick(item)}
+                  />
                 </li>
               ))}
             </ul>
           </section>
         ))}
       </div>
+      {selectedIngredient && (
+        <IngredientDetails
+          selectedIngredient={selectedIngredient}
+          isModalOpen={!!selectedIngredient}
+          closeModal={onIngredientClose}
+        />
+      )}
     </section>
   );
 }
