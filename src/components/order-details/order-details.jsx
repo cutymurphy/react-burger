@@ -1,8 +1,9 @@
 import { orderData } from "../../utils/order";
 import styles from "./order-details.module.css";
 import orderCheckImage from "../../images/order-check.png";
+import PropTypes from "prop-types";
 
-function OrderDetails() {
+function OrderDetails({ onTickClick }) {
   return (
     <section className={styles.details}>
       <p
@@ -15,6 +16,7 @@ function OrderDetails() {
         alt="фото галочки заказа"
         src={orderCheckImage}
         className={`${styles.details__image} mb-15`}
+        onClick={onTickClick}
       />
       <p className="text text_type_main-default mb-2">{orderData.message}</p>
       <p className="text text_type_main-default text_color_inactive mb-30">
@@ -23,5 +25,9 @@ function OrderDetails() {
     </section>
   );
 }
+
+OrderDetails.propTypes = {
+  onTickClick: PropTypes.func,
+};
 
 export default OrderDetails;

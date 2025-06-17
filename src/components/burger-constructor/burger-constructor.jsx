@@ -108,7 +108,7 @@ function BurgerConstructor({ ingredients, mainBunId, selectedIngredientsIds }) {
       )}
       {isOrderModalOpen && (
         <Modal onClose={onOrderModalClose}>
-          <OrderDetails />
+          <OrderDetails onTickClick={onOrderModalClose} />
         </Modal>
       )}
     </section>
