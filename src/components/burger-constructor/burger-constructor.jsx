@@ -15,19 +15,40 @@ import {
 } from "../../services/actions/ingredient-details";
 import { CLOSE_ORDER, postOrder } from "../../services/actions/order";
 import { useMemo } from "react";
+import { useDrop } from "react-dnd";
+import {
+  ADD_INGREDIENT,
+  CHANGE_BUN,
+  DELETE_INGREDIENT,
+} from "../../services/actions/builder";
+import {
+  DECREASE_INGREDIENT_COUNT,
+  INCREASE_INGREDIENT_COUNT,
+} from "../../services/actions/ingredients";
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
   const ingredients = useSelector((store) => store.ingredients.ingredients);
-  const selectedIngredients = useSelector(
-    (store) => store.builder.selectedIngredients
+  const { selectedIngredientsIds, mainBunId } = useSelector(
+    (store) => store.builder
   );
   const selectedIngredient = useSelector(
     (store) => store.ingredient.selectedIngredient
   );
   const { order, orderFailed } = useSelector((store) => store.order);
 
-  const mainBun = ingredients.length > 0 ? ingredients[0] : null;
+  const [, dropTarget] = useDrop({
+    accept: "ingredient",
+    drop(item) {
+      item.type === "bun" ? changeBun(item.id) : addIngredient(item.id);
+    },
+  });
+
+  const selectedIngredients = selectedIngredientsIds.map((id) =>
+    ingredients.find((item) => item._id === id)
+  );
+  const mainBun = ingredients.find((item) => item._id === mainBunId);
+
   const totalIngredientsCost = useMemo(() => {
     if (!mainBun) return 0;
     return (
@@ -35,6 +56,23 @@ function BurgerConstructor() {
       mainBun.price * 2
     );
   }, [selectedIngredients, mainBun]);
+
+  const addIngredient = (ingredientId) => {
+    dispatch({ type: ADD_INGREDIENT, ingredientId });
+    dispatch({ type: INCREASE_INGREDIENT_COUNT, ingredientId });
+  };
+
+  const changeBun = (ingredientId) => {
+    if (mainBunId !== ingredientId) {
+      dispatch({ type: CHANGE_BUN, bunId: ingredientId });
+    }
+  };
+
+  const deleteIngredient = (e, ingredientId, index) => {
+    e.stopPropagation();
+    dispatch({ type: DELETE_INGREDIENT, ingredientIndex: index });
+    dispatch({ type: DECREASE_INGREDIENT_COUNT, ingredientId });
+  };
 
   const onIngredientClick = (ingredient) => {
     dispatch({ type: SELECT_INGREDIENT, ingredient });
@@ -48,7 +86,7 @@ function BurgerConstructor() {
     if (selectedIngredients.length > 0) {
       dispatch(postOrder(selectedIngredients.map((item) => item._id)));
     } else {
-      alert("Сначала выберите ингредиенты для заказа");
+      alert("Сначала добавьте ингредиенты в бургер");
     }
   };
 
@@ -58,8 +96,11 @@ function BurgerConstructor() {
 
   return (
     <section className={`${styles.constructor} mt-25 pb-10 pl-4 pr-2`}>
-      <article className={`${styles.constructor__container} mb-10`}>
-        <div onClick={() => onIngredientClick(mainBun)}>
+      <article
+        className={`${styles.constructor__container} mb-10`}
+        ref={dropTarget}
+      >
+        <div onClick={() => onIngredientClick(mainBun)} className="pr-2">
           <ConstructorElement
             type="top"
             isLocked={true}
@@ -84,12 +125,15 @@ function BurgerConstructor() {
                   text={ingredient.name}
                   price={ingredient.price}
                   thumbnail={ingredient.image_mobile}
+                  handleClose={(e) =>
+                    deleteIngredient(e, ingredient._id, index)
+                  }
                 />
               </div>
             </li>
           ))}
         </ul>
-        <div onClick={() => onIngredientClick(mainBun)}>
+        <div onClick={() => onIngredientClick(mainBun)} className="pr-2">
           <ConstructorElement
             type="bottom"
             isLocked={true}
