@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
@@ -11,6 +11,8 @@ import {
 } from "../../services/actions/ingredient-details";
 
 function BurgerIngredients() {
+  const scrollContainerRef = useRef(null);
+
   const dispatch = useDispatch();
   const ingredients = useSelector((store) => store.ingredients.ingredients);
   const selectedIngredient = useSelector(
@@ -41,6 +43,34 @@ function BurgerIngredients() {
     }
   };
 
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const bunTop = refs.bun.current.getBoundingClientRect().top;
+      const sauceTop = refs.sauce.current.getBoundingClientRect().top;
+      const mainTop = refs.main.current.getBoundingClientRect().top;
+
+      const containerTop = container.getBoundingClientRect().top;
+
+      const distances = {
+        bun: Math.abs(bunTop - containerTop),
+        sauce: Math.abs(sauceTop - containerTop),
+        main: Math.abs(mainTop - containerTop),
+      };
+
+      const closest = Object.entries(distances).reduce((min, curr) =>
+        curr[1] < distances[min[0]] ? curr : min
+      )[0];
+
+      setCurrent(closest);
+    };
+
+    container.addEventListener("scroll", handleScroll);
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, [refs.bun, refs.main, refs.sauce]);
+
   const onIngredientClick = (ingredient) => {
     dispatch({ type: SELECT_INGREDIENT, ingredient });
   };
@@ -67,7 +97,7 @@ function BurgerIngredients() {
           Начинки
         </Tab>
       </nav>
-      <div className={styles.ingredients__list}>
+      <div className={styles.ingredients__list} ref={scrollContainerRef}>
         {Object.entries(groupedIngredients).map(([type, items]) => (
           <section
             key={type}
