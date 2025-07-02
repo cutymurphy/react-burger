@@ -3,7 +3,6 @@ import {
   Button,
   ConstructorElement,
   CurrencyIcon,
-  DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientDetails from "../ingredient-details";
 import OrderDetails from "../order-details";
@@ -16,15 +15,9 @@ import {
 import { CLOSE_ORDER, postOrder } from "../../services/actions/order";
 import { useMemo } from "react";
 import { useDrop } from "react-dnd";
-import {
-  ADD_INGREDIENT,
-  CHANGE_BUN,
-  DELETE_INGREDIENT,
-} from "../../services/actions/builder";
-import {
-  DECREASE_INGREDIENT_COUNT,
-  INCREASE_INGREDIENT_COUNT,
-} from "../../services/actions/ingredients";
+import { ADD_INGREDIENT, CHANGE_BUN } from "../../services/actions/builder";
+import { INCREASE_INGREDIENT_COUNT } from "../../services/actions/ingredients";
+import IngredientDraggable from "../ingredient-draggable";
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
@@ -68,12 +61,6 @@ function BurgerConstructor() {
     }
   };
 
-  const deleteIngredient = (e, ingredientId, index) => {
-    e.stopPropagation();
-    dispatch({ type: DELETE_INGREDIENT, ingredientIndex: index });
-    dispatch({ type: DECREASE_INGREDIENT_COUNT, ingredientId });
-  };
-
   const onIngredientClick = (ingredient) => {
     dispatch({ type: SELECT_INGREDIENT, ingredient });
   };
@@ -112,25 +99,11 @@ function BurgerConstructor() {
         </div>
         <ul className={`${styles.constructor__list} pr-2`}>
           {selectedIngredients.map((ingredient, index) => (
-            <li
-              key={"ingredient_" + index}
-              className={styles.constructor__item}
-            >
-              <DragIcon type="primary" className={styles.constructor__drag} />
-              <div
-                onClick={() => onIngredientClick(ingredient)}
-                className={styles.constructor__element}
-              >
-                <ConstructorElement
-                  text={ingredient.name}
-                  price={ingredient.price}
-                  thumbnail={ingredient.image_mobile}
-                  handleClose={(e) =>
-                    deleteIngredient(e, ingredient._id, index)
-                  }
-                />
-              </div>
-            </li>
+            <IngredientDraggable
+              key={`${ingredient._id}_${index}`}
+              ingredient={ingredient}
+              index={index}
+            />
           ))}
         </ul>
         <div onClick={() => onIngredientClick(mainBun)} className="pr-2">

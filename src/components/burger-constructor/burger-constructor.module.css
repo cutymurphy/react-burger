@@ -33,16 +33,6 @@
   padding-left: 0;
 }
 
-.constructor__item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.constructor__drag {
-  cursor: pointer;
-}
-
 .constructor__order {
   display: flex;
   align-items: center;
