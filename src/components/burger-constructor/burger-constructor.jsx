@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import styles from "./burger-constructor.module.css";
 import {
   Button,
@@ -6,38 +5,55 @@ import {
   CurrencyIcon,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { IngredientType } from "../../utils/types";
-import { useState } from "react";
 import IngredientDetails from "../ingredient-details";
 import OrderDetails from "../order-details";
 import Modal from "../modal";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  SELECT_INGREDIENT,
+  UNSELECT_INGREDIENT,
+} from "../../services/actions/ingredient-details";
+import { CLOSE_ORDER, postOrder } from "../../services/actions/order";
+import { useMemo } from "react";
 
-function BurgerConstructor({ ingredients, mainBunId, selectedIngredientsIds }) {
-  const [selectedIngredient, setSelectedIngredient] = useState(null);
-  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
-
-  const mainBun = ingredients.find((item) => item._id === mainBunId);
-  const selectedIngredients = selectedIngredientsIds.map((id) =>
-    ingredients.find((item) => item._id === id)
+function BurgerConstructor() {
+  const dispatch = useDispatch();
+  const ingredients = useSelector((store) => store.ingredients.ingredients);
+  const selectedIngredients = useSelector(
+    (store) => store.builder.selectedIngredients
   );
-  const totalIngredientsCost =
-    selectedIngredients.reduce((sum, item) => sum + item.price, 0) +
-    mainBun.price * 2;
+  const selectedIngredient = useSelector(
+    (store) => store.ingredient.selectedIngredient
+  );
+  const { order, orderFailed } = useSelector((store) => store.order);
+
+  const mainBun = ingredients.length > 0 ? ingredients[0] : null;
+  const totalIngredientsCost = useMemo(() => {
+    if (!mainBun) return 0;
+    return (
+      selectedIngredients.reduce((sum, item) => sum + item.price, 0) +
+      mainBun.price * 2
+    );
+  }, [selectedIngredients, mainBun]);
 
   const onIngredientClick = (ingredient) => {
-    setSelectedIngredient(ingredient);
+    dispatch({ type: SELECT_INGREDIENT, ingredient });
   };
 
   const onIngredientClose = () => {
-    setSelectedIngredient(null);
+    dispatch({ type: UNSELECT_INGREDIENT });
   };
 
-  const onOrderModalOpen = () => {
-    setIsOrderModalOpen(true);
+  const createOrder = () => {
+    if (selectedIngredients.length > 0) {
+      dispatch(postOrder(selectedIngredients.map((item) => item._id)));
+    } else {
+      alert("Сначала выберите ингредиенты для заказа");
+    }
   };
 
   const onOrderModalClose = () => {
-    setIsOrderModalOpen(false);
+    dispatch({ type: CLOSE_ORDER });
   };
 
   return (
@@ -96,17 +112,17 @@ function BurgerConstructor({ ingredients, mainBunId, selectedIngredientsIds }) {
           htmlType="button"
           type="primary"
           size="large"
-          onClick={onOrderModalOpen}
+          onClick={createOrder}
         >
           Оформить заказ
         </Button>
       </footer>
       {selectedIngredient && (
         <Modal title="Детали ингредиента" onClose={onIngredientClose}>
-          <IngredientDetails selectedIngredient={selectedIngredient} />
+          <IngredientDetails />
         </Modal>
       )}
-      {isOrderModalOpen && (
+      {order.number !== null && !orderFailed && (
         <Modal onClose={onOrderModalClose}>
           <OrderDetails onTickClick={onOrderModalClose} />
         </Modal>
@@ -114,11 +130,5 @@ function BurgerConstructor({ ingredients, mainBunId, selectedIngredientsIds }) {
     </section>
   );
 }
-
-BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(IngredientType).isRequired,
-  mainBunId: PropTypes.string.isRequired,
-  selectedIngredientsIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
 
 export default BurgerConstructor;
