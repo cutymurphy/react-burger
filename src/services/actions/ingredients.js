@@ -6,6 +6,7 @@ export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
 
 export const INCREASE_INGREDIENT_COUNT = "INCREASE_INGREDIENT_COUNT";
 export const DECREASE_INGREDIENT_COUNT = "DECREASE_INGREDIENT_COUNT";
+export const CLEAR_INGREDIENTS_COUNT = "CLEAR_INGREDIENTS_COUNT";
 
 export function getIngredients() {
   return function (dispatch) {

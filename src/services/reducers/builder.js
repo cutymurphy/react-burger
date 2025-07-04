@@ -1,6 +1,7 @@
 import {
   ADD_INGREDIENT,
   CHANGE_BUN,
+  CLEAR_CONSTRUCTOR,
   DELETE_INGREDIENT,
   MOVE_INGREDIENT,
 } from "../actions/builder";
@@ -46,7 +47,13 @@ export const builderReducer = (state = initialBuilder, action) => {
         selectedIngredients: selected,
       };
     }
-
+    case CLEAR_CONSTRUCTOR: {
+      return {
+        ...state,
+        selectedIngredients: [],
+        mainBun: null,
+      };
+    }
     default: {
       return state;
     }

@@ -14,6 +14,11 @@ function App() {
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
     (store) => store.ingredients
   );
+  const orderRequest = useSelector((store) => store.order.orderRequest);
+
+  const isLoading = ingredientsRequest || orderRequest;
+  const hasError = ingredientsFailed;
+  const canRenderMain = !isLoading && !hasError && ingredients.length > 0;
 
   useEffect(() => {
     dispatch(getIngredients());
@@ -22,22 +27,19 @@ function App() {
   return (
     <div className={styles.app}>
       <AppHeader />
-      {(ingredientsRequest || ingredientsFailed) && (
+      {isLoading && (
         <div className={styles.state}>
-          {ingredientsRequest ? (
-            <RingLoader
-              color="var(--dark-grey)"
-              loading={ingredientsRequest}
-              size={100}
-            />
-          ) : (
-            <p className="text text_type_main-default text_color_inactive">
-              Произошла ошибка при получении игредиентов
-            </p>
-          )}
+          <RingLoader color="var(--dark-grey)" loading size={100} />
         </div>
       )}
-      {!ingredientsRequest && !ingredientsFailed && ingredients.length > 0 && (
+      {hasError && !isLoading && (
+        <div className={styles.state}>
+          <p className="text text_type_main-default text_color_inactive">
+            Произошла ошибка при получении ингредиентов
+          </p>
+        </div>
+      )}
+      {canRenderMain && (
         <main className={styles.main}>
           <DndProvider backend={HTML5Backend}>
             <BurgerIngredients />

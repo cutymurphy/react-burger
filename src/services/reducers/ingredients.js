@@ -4,6 +4,7 @@ import {
   GET_INGREDIENTS_SUCCESS,
   INCREASE_INGREDIENT_COUNT,
   DECREASE_INGREDIENT_COUNT,
+  CLEAR_INGREDIENTS_COUNT,
 } from "../actions/ingredients";
 
 const initialIngredients = {
@@ -23,6 +24,7 @@ export const ingredientsReducer = (state = initialIngredients, action) => {
     }
     case GET_INGREDIENTS_ERROR: {
       return {
+        ...state,
         ingredients: [],
         ingredientsFailed: true,
         ingredientsRequest: false,
@@ -40,7 +42,9 @@ export const ingredientsReducer = (state = initialIngredients, action) => {
       return {
         ...state,
         ingredients: [...state.ingredients].map((item) =>
-          item._id === action.ingredientId ? { ...item, __v: item.__v + 1 } : item
+          item._id === action.ingredientId
+            ? { ...item, __v: item.__v + 1 }
+            : item
         ),
       };
     }
@@ -48,8 +52,19 @@ export const ingredientsReducer = (state = initialIngredients, action) => {
       return {
         ...state,
         ingredients: [...state.ingredients].map((item) =>
-          item._id === action.ingredientId ? { ...item, __v: item.__v - 1 } : item
+          item._id === action.ingredientId
+            ? { ...item, __v: item.__v - 1 }
+            : item
         ),
+      };
+    }
+    case CLEAR_INGREDIENTS_COUNT: {
+      return {
+        ...state,
+        ingredients: [...state.ingredients].map((item) => ({
+          ...item,
+          __v: 0,
+        })),
       };
     }
     default: {
