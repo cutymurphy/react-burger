@@ -6,8 +6,8 @@ import {
 } from "../actions/builder";
 
 const initialBuilder = {
-  selectedIngredientsIds: [],
-  mainBunId: null,
+  selectedIngredients: [],
+  mainBun: null,
 };
 
 export const builderReducer = (state = initialBuilder, action) => {
@@ -15,29 +15,26 @@ export const builderReducer = (state = initialBuilder, action) => {
     case ADD_INGREDIENT: {
       return {
         ...state,
-        selectedIngredientsIds: [
-          ...state.selectedIngredientsIds,
-          action.ingredientId,
-        ],
+        selectedIngredients: [...state.selectedIngredients, action.payload],
       };
     }
     case DELETE_INGREDIENT: {
       return {
         ...state,
-        selectedIngredientsIds: state.selectedIngredientsIds.filter(
-          (_, index) => index !== action.ingredientIndex
+        selectedIngredients: state.selectedIngredients.filter(
+          (item) => item.uniqueId !== action.ingredientUniqueId
         ),
       };
     }
     case CHANGE_BUN: {
       return {
         ...state,
-        mainBunId: action.bunId,
+        mainBun: action.bun,
       };
     }
     case MOVE_INGREDIENT: {
       const { fromIndex, toIndex } = action;
-      const selected = [...state.selectedIngredientsIds];
+      const selected = [...state.selectedIngredients];
 
       const removedItems = selected.splice(fromIndex, 1);
       const movedItem = removedItems[0];
@@ -46,7 +43,7 @@ export const builderReducer = (state = initialBuilder, action) => {
 
       return {
         ...state,
-        selectedIngredientsIds: selected,
+        selectedIngredients: selected,
       };
     }
 

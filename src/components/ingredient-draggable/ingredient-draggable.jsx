@@ -21,7 +21,7 @@ function IngredientDraggable({ ingredient, index }) {
 
   const [, drag] = useDrag({
     type: "ingredientDraggable",
-    item: { id: ingredient._id, index },
+    item: { id: ingredient.uniqueId, index },
   });
 
   const [, drop] = useDrop({
@@ -63,10 +63,13 @@ function IngredientDraggable({ ingredient, index }) {
     dispatch({ type: SELECT_INGREDIENT, ingredient });
   };
 
-  const deleteIngredient = (e, ingredientId, index) => {
+  const deleteIngredient = (e) => {
     e.stopPropagation();
-    dispatch({ type: DELETE_INGREDIENT, ingredientIndex: index });
-    dispatch({ type: DECREASE_INGREDIENT_COUNT, ingredientId });
+    dispatch({
+      type: DELETE_INGREDIENT,
+      ingredientUniqueId: ingredient.uniqueId,
+    });
+    dispatch({ type: DECREASE_INGREDIENT_COUNT, ingredientId: ingredient._id });
   };
 
   return (
@@ -80,7 +83,7 @@ function IngredientDraggable({ ingredient, index }) {
           text={ingredient.name}
           price={ingredient.price}
           thumbnail={ingredient.image_mobile}
-          handleClose={(e) => deleteIngredient(e, ingredient._id, index)}
+          handleClose={deleteIngredient}
         />
       </div>
     </li>

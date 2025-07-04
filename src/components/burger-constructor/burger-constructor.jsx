@@ -15,14 +15,14 @@ import {
 import { CLOSE_ORDER, postOrder } from "../../services/actions/order";
 import { useMemo } from "react";
 import { useDrop } from "react-dnd";
-import { ADD_INGREDIENT, CHANGE_BUN } from "../../services/actions/builder";
+import { addIngredient, CHANGE_BUN } from "../../services/actions/builder";
 import { INCREASE_INGREDIENT_COUNT } from "../../services/actions/ingredients";
 import IngredientDraggable from "../ingredient-draggable";
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
   const ingredients = useSelector((store) => store.ingredients.ingredients);
-  const { selectedIngredientsIds, mainBunId } = useSelector(
+  const { selectedIngredients, mainBun } = useSelector(
     (store) => store.builder
   );
   const selectedIngredient = useSelector(
@@ -33,17 +33,12 @@ function BurgerConstructor() {
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
     drop(item) {
-      item.type === "bun" ? changeBun(item.id) : addIngredient(item.id);
+      item.type === "bun" ? changeBun(item.id) : addNewIngredient(item.id);
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),
     }),
   });
-
-  const selectedIngredients = selectedIngredientsIds.map((id) =>
-    ingredients.find((item) => item._id === id)
-  );
-  const mainBun = ingredients.find((item) => item._id === mainBunId);
 
   const isCreateOrderDisabled = !mainBun || !selectedIngredients.length;
 
@@ -55,14 +50,21 @@ function BurgerConstructor() {
     );
   }, [selectedIngredients, mainBun]);
 
-  const addIngredient = (ingredientId) => {
-    dispatch({ type: ADD_INGREDIENT, ingredientId });
-    dispatch({ type: INCREASE_INGREDIENT_COUNT, ingredientId });
+  const addNewIngredient = (ingredientId) => {
+    const ingredient = ingredients.find((item) => item._id === ingredientId);
+    if (ingredient) {
+      dispatch(addIngredient(ingredient));
+      dispatch({ type: INCREASE_INGREDIENT_COUNT, ingredientId });
+    }
   };
 
   const changeBun = (ingredientId) => {
-    if (mainBunId !== ingredientId) {
-      dispatch({ type: CHANGE_BUN, bunId: ingredientId });
+    const newBun = ingredients.find((item) => item._id === ingredientId);
+    if (
+      (!mainBun && newBun) ||
+      (mainBun && newBun && mainBun._id !== newBun._id)
+    ) {
+      dispatch({ type: CHANGE_BUN, bun: newBun });
     }
   };
 
@@ -76,9 +78,9 @@ function BurgerConstructor() {
 
   const createOrder = () => {
     const ingredientIds = [
-      mainBunId,
+      mainBun._id,
       ...selectedIngredients.map((item) => item._id),
-      mainBunId,
+      mainBun._id,
     ];
 
     dispatch(postOrder(ingredientIds));
@@ -111,7 +113,7 @@ function BurgerConstructor() {
             <ul className={`${styles.constructor__list} pr-2`}>
               {selectedIngredients.map((ingredient, index) => (
                 <IngredientDraggable
-                  key={`${ingredient._id}_${index}`}
+                  key={ingredient.uniqueId}
                   ingredient={ingredient}
                   index={index}
                 />

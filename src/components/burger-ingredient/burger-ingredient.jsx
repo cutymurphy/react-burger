@@ -14,8 +14,8 @@ function BurgerIngredient({ ingredient, onClick }) {
     item: { id: ingredient._id, type: ingredient.type },
   });
 
-  const mainBunId = useSelector((store) => store.builder.mainBunId);
-  const count = ingredient._id === mainBunId ? 2 : ingredient.__v;
+  const mainBun = useSelector((store) => store.builder.mainBun);
+  const count = mainBun && ingredient._id === mainBun._id ? 2 : ingredient.__v;
 
   return (
     <article className={styles.ingredient} onClick={onClick}>
