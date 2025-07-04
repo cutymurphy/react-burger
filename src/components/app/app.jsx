@@ -2,77 +2,49 @@ import AppHeader from "../app-header";
 import BurgerIngredients from "../burger-ingredients";
 import styles from "./app.module.css";
 import BurgerConstructor from "../burger-constructor";
-import { apiIngredients } from "../../utils/api";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { RingLoader } from "react-spinners";
+import { useDispatch, useSelector } from "react-redux";
+import { getIngredients } from "../../services/actions/ingredients";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
-  const [state, setState] = useState({
-    ingredients: [],
-    loading: true,
-    hasError: false,
-  });
+  const dispatch = useDispatch();
+  const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
+    (store) => store.ingredients
+  );
+  const orderRequest = useSelector((store) => store.order.orderRequest);
+
+  const isLoading = ingredientsRequest || orderRequest;
+  const hasError = ingredientsFailed;
+  const canRenderMain = !isLoading && !hasError && ingredients.length > 0;
 
   useEffect(() => {
-    const getIngredientsData = async () => {
-      fetch(apiIngredients)
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          }
-          return Promise.reject(`Ошибка ${res.status}`);
-        })
-        .then((data) =>
-          setTimeout(() => {
-            setState((prev) => ({
-              ...prev,
-              ingredients: data.data,
-              loading: false,
-            }));
-          }, 1000)
-        )
-        .catch((_e) =>
-          setState((prev) => ({ ...prev, loading: false, hasError: true }))
-        );
-    };
-
-    getIngredientsData();
-  }, []);
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>
       <AppHeader />
-      {(state.loading || state.hasError) && (
+      {isLoading && (
         <div className={styles.state}>
-          {state.loading ? (
-            <RingLoader
-              color="var(--dark-grey)"
-              loading={state.loading}
-              size={100}
-            />
-          ) : (
-            <p className="text text_type_main-default text_color_inactive">
-              Произошла ошибка при получении игредиентов
-            </p>
-          )}
+          <RingLoader color="var(--dark-grey)" loading size={100} />
         </div>
       )}
-      {!state.loading && !state.hasError && state.ingredients.length > 0 && (
+      {hasError && !isLoading && (
+        <div className={styles.state}>
+          <p className="text text_type_main-default text_color_inactive">
+            Произошла ошибка при получении ингредиентов
+          </p>
+        </div>
+      )}
+      {canRenderMain && (
         <main className={styles.main}>
-          <BurgerIngredients ingredients={state.ingredients} />
-          <BurgerConstructor
-            ingredients={state.ingredients}
-            mainBunId={state.ingredients[0]._id}
-            selectedIngredientsIds={[
-              "643d69a5c3f7b9001cfa093f",
-              "643d69a5c3f7b9001cfa0941",
-              "643d69a5c3f7b9001cfa093e",
-              "643d69a5c3f7b9001cfa0942",
-              "643d69a5c3f7b9001cfa0942",
-              "643d69a5c3f7b9001cfa0943",
-              "643d69a5c3f7b9001cfa093f",
-            ]}
-          />
+          <DndProvider backend={HTML5Backend}>
+            <BurgerIngredients />
+            <BurgerConstructor />
+          </DndProvider>
         </main>
       )}
     </div>

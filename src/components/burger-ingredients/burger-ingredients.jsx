@@ -1,15 +1,25 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
-import PropTypes from "prop-types";
-import { IngredientType } from "../../utils/types";
 import IngredientDetails from "../ingredient-details";
 import Modal from "../modal";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  SELECT_INGREDIENT,
+  UNSELECT_INGREDIENT,
+} from "../../services/actions/ingredient-details";
 
-function BurgerIngredients({ ingredients }) {
+function BurgerIngredients() {
+  const scrollContainerRef = useRef(null);
+
+  const dispatch = useDispatch();
+  const ingredients = useSelector((store) => store.ingredients.ingredients);
+  const selectedIngredient = useSelector(
+    (store) => store.ingredient.selectedIngredient
+  );
+
   const [current, setCurrent] = useState("bun");
-  const [selectedIngredient, setSelectedIngredient] = useState(null);
 
   const groupedIngredients = useMemo(
     () => ({
@@ -33,12 +43,40 @@ function BurgerIngredients({ ingredients }) {
     }
   };
 
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const bunTop = refs.bun.current.getBoundingClientRect().top;
+      const sauceTop = refs.sauce.current.getBoundingClientRect().top;
+      const mainTop = refs.main.current.getBoundingClientRect().top;
+
+      const containerTop = container.getBoundingClientRect().top;
+
+      const distances = {
+        bun: Math.abs(bunTop - containerTop),
+        sauce: Math.abs(sauceTop - containerTop),
+        main: Math.abs(mainTop - containerTop),
+      };
+
+      const closest = Object.entries(distances).reduce((min, curr) =>
+        curr[1] < distances[min[0]] ? curr : min
+      )[0];
+
+      setCurrent(closest);
+    };
+
+    container.addEventListener("scroll", handleScroll);
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, [refs.bun, refs.main, refs.sauce]);
+
   const onIngredientClick = (ingredient) => {
-    setSelectedIngredient(ingredient);
+    dispatch({ type: SELECT_INGREDIENT, ingredient });
   };
 
   const onIngredientClose = () => {
-    setSelectedIngredient(null);
+    dispatch({ type: UNSELECT_INGREDIENT });
   };
 
   return (
@@ -59,7 +97,7 @@ function BurgerIngredients({ ingredients }) {
           Начинки
         </Tab>
       </nav>
-      <div className={styles.ingredients__list}>
+      <div className={styles.ingredients__list} ref={scrollContainerRef}>
         {Object.entries(groupedIngredients).map(([type, items]) => (
           <section
             key={type}
@@ -88,15 +126,11 @@ function BurgerIngredients({ ingredients }) {
       </div>
       {selectedIngredient && (
         <Modal title="Детали ингредиента" onClose={onIngredientClose}>
-          <IngredientDetails selectedIngredient={selectedIngredient} />
+          <IngredientDetails />
         </Modal>
       )}
     </section>
   );
 }
-
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(IngredientType).isRequired,
-};
 
 export default BurgerIngredients;

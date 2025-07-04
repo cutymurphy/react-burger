@@ -1,0 +1,14 @@
+.constructor__element {
+  cursor: pointer;
+  flex: 1;
+}
+
+.constructor__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.constructor__drag {
+  cursor: pointer;
+}

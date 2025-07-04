@@ -19,6 +19,6 @@
 
 .ingredient__counter {
   position: absolute;
-  right: 0;
+  right: 12px;
   top: 0;
 }

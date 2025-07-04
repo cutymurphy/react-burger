@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   height: auto;
+  width: 600px;
+  box-sizing: border-box;
 }
 
 .constructor__container {
@@ -33,16 +35,6 @@
   padding-left: 0;
 }
 
-.constructor__item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.constructor__drag {
-  cursor: pointer;
-}
-
 .constructor__order {
   display: flex;
   align-items: center;
@@ -52,6 +44,16 @@
 .constructor__currency {
   width: 36px;
   height: auto;
+}
+
+.constructor__empty {
+  border: 2px dashed var(--modal-border);
+  padding: 20px;
+  transition: 0.2s;
+}
+
+.constructor__empty_hover {
+  border: 2px dashed var(--dark-grey);
 }
 
 @media (max-height: 960px) {
