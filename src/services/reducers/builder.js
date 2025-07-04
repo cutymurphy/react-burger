@@ -7,7 +7,7 @@ import {
 
 const initialBuilder = {
   selectedIngredientsIds: [],
-  mainBunId: "643d69a5c3f7b9001cfa093c",
+  mainBunId: null,
 };
 
 export const builderReducer = (state = initialBuilder, action) => {

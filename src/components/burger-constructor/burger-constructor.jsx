@@ -30,17 +30,22 @@ function BurgerConstructor() {
   );
   const { order, orderFailed } = useSelector((store) => store.order);
 
-  const [, dropTarget] = useDrop({
+  const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
     drop(item) {
       item.type === "bun" ? changeBun(item.id) : addIngredient(item.id);
     },
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
   });
 
   const selectedIngredients = selectedIngredientsIds.map((id) =>
     ingredients.find((item) => item._id === id)
   );
   const mainBun = ingredients.find((item) => item._id === mainBunId);
+
+  const isCreateOrderDisabled = !mainBun || !selectedIngredients.length;
 
   const totalIngredientsCost = useMemo(() => {
     if (!mainBun) return 0;
@@ -70,11 +75,13 @@ function BurgerConstructor() {
   };
 
   const createOrder = () => {
-    if (selectedIngredients.length > 0) {
-      dispatch(postOrder(selectedIngredients.map((item) => item._id)));
-    } else {
-      alert("Сначала добавьте ингредиенты в бургер");
-    }
+    const ingredientIds = [
+      mainBunId,
+      ...selectedIngredients.map((item) => item._id),
+      mainBunId,
+    ];
+
+    dispatch(postOrder(ingredientIds));
   };
 
   const onOrderModalClose = () => {
@@ -87,35 +94,53 @@ function BurgerConstructor() {
         className={`${styles.constructor__container} mb-10`}
         ref={dropTarget}
       >
-        <div onClick={() => onIngredientClick(mainBun)} className="pr-2">
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text={`${mainBun.name} (верх)`}
-            price={mainBun.price}
-            thumbnail={mainBun.image_mobile}
-            extraClass={`${styles.constructor__element} ${styles.constructor__element_locked} ml-8`}
-          />
-        </div>
-        <ul className={`${styles.constructor__list} pr-2`}>
-          {selectedIngredients.map((ingredient, index) => (
-            <IngredientDraggable
-              key={`${ingredient._id}_${index}`}
-              ingredient={ingredient}
-              index={index}
-            />
-          ))}
-        </ul>
-        <div onClick={() => onIngredientClick(mainBun)} className="pr-2">
-          <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text={`${mainBun.name} (низ)`}
-            price={mainBun.price}
-            thumbnail={mainBun.image_mobile}
-            extraClass={`${styles.constructor__element} ${styles.constructor__element_locked} ml-8`}
-          />
-        </div>
+        {mainBun || selectedIngredients.length > 0 ? (
+          <>
+            {mainBun && (
+              <div onClick={() => onIngredientClick(mainBun)} className="pr-2">
+                <ConstructorElement
+                  type="top"
+                  isLocked={true}
+                  text={`${mainBun.name} (верх)`}
+                  price={mainBun.price}
+                  thumbnail={mainBun.image_mobile}
+                  extraClass={`${styles.constructor__element} ${styles.constructor__element_locked} ml-8`}
+                />
+              </div>
+            )}
+            <ul className={`${styles.constructor__list} pr-2`}>
+              {selectedIngredients.map((ingredient, index) => (
+                <IngredientDraggable
+                  key={`${ingredient._id}_${index}`}
+                  ingredient={ingredient}
+                  index={index}
+                />
+              ))}
+            </ul>
+            {mainBun && (
+              <div onClick={() => onIngredientClick(mainBun)} className="pr-2">
+                <ConstructorElement
+                  type="bottom"
+                  isLocked={true}
+                  text={`${mainBun.name} (низ)`}
+                  price={mainBun.price}
+                  thumbnail={mainBun.image_mobile}
+                  extraClass={`${styles.constructor__element} ${styles.constructor__element_locked} ml-8`}
+                />
+              </div>
+            )}
+          </>
+        ) : (
+          <div
+            className={`${styles.constructor__empty} ${
+              isHover && styles.constructor__empty_hover
+            }`}
+          >
+            <p className="text text_type_main-default text_color_inactive">
+              Перенесите сюда булку и ингредиенты для создания заказа
+            </p>
+          </div>
+        )}
       </article>
       <footer className={styles.constructor__order}>
         <p className="text text_type_digits-medium mr-2">
@@ -130,6 +155,7 @@ function BurgerConstructor() {
           type="primary"
           size="large"
           onClick={createOrder}
+          disabled={isCreateOrderDisabled}
         >
           Оформить заказ
         </Button>
