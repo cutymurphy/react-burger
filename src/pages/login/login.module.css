@@ -1,0 +1,31 @@
+.login {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login__form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.login__password svg {
+  margin-left: 24px;
+}
+
+.login__footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login__link {
+  color: var(--interface-accent);
+  cursor: pointer;
+}

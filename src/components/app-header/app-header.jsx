@@ -5,8 +5,11 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./app-header.module.css";
+import { useNavigate } from "react-router-dom";
 
 function AppHeader() {
+  const navigate = useNavigate();
+
   return (
     <header className={styles.header}>
       <nav className={`${styles.header__content} pt-4 pb-4`}>
@@ -24,7 +27,9 @@ function AppHeader() {
             </p>
           </li>
         </ul>
-        <Logo className={styles.header__logo} />
+        <div onClick={() => navigate("/")} className={styles.header__logo}>
+          <Logo />
+        </div>
         <ul className={styles.header__nav}>
           <li
             className={`${styles.header__btn} ${styles.disabled} pt-4 pr-5 pb-4 pl-5`}
