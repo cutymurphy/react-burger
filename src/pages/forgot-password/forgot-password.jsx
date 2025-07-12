@@ -5,13 +5,23 @@ import {
 import styles from "./forgot-password.module.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { validateField } from "../../utils/validation";
+import { handleForgotPassword } from "../../utils/resetPasswordApi";
 
 function ForgotPassword() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const error = validateField("email", email);
+    if (error) {
+      setEmailError(error);
+    } else {
+      await handleForgotPassword(email, navigate);
+    }
   };
 
   return (
@@ -20,10 +30,17 @@ function ForgotPassword() {
         <p className="text text_type_main-medium mb-6">Восстановление пароля</p>
         <Input
           placeholder={"Укажите e-mail"}
-          type={"email"}
-          onChange={(e) => setEmail(e.target.value)}
+          type={"text"}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (emailError) {
+              setEmailError("");
+            }
+          }}
           value={email}
-          extraClass="mb-6"
+          extraClass={`mb-6 ${styles.forgot_password__field}`}
+          error={!!emailError}
+          errorText={emailError}
         />
         <Button
           htmlType="submit"
