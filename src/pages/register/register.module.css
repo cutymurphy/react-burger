@@ -1,6 +1,6 @@
 .register {
   position: absolute;
-  top: 0;
+  top: 88px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -15,8 +15,12 @@
   flex-direction: column;
 }
 
-.register__password svg {
+.register__field svg {
   margin-left: 24px;
+}
+
+.register__field p {
+  margin-bottom: 0;
 }
 
 .register__footer {

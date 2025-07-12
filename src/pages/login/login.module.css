@@ -1,6 +1,6 @@
 .login {
   position: absolute;
-  top: 0;
+  top: 88px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -15,8 +15,12 @@
   flex-direction: column;
 }
 
-.login__password svg {
+.login__field svg {
   margin-left: 24px;
+}
+
+.login__field p {
+  margin-bottom: 0;
 }
 
 .login__footer {

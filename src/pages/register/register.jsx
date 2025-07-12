@@ -5,20 +5,50 @@ import {
 import styles from "./register.module.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { signUp } from "../../services/actions/user";
+import { useDispatch } from "react-redux";
+import { validateField } from "../../utils/validation";
+
+const initialInfo = {
+  name: "",
+  email: "",
+  password: "",
+};
 
 function Register() {
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+
+  const [data, setData] = useState({ ...initialInfo });
+  const [errors, setErrors] = useState({ ...initialInfo });
   const [showPassword, setShowPassword] = useState(false);
+
+  const onChange = (field, value) => {
+    setData({ ...data, [field]: value });
+    if (errors[field]) {
+      setErrors({ ...errors, [field]: "" });
+    }
+  };
 
   const handleTogglePasswordVisible = () => {
     setShowPassword((prev) => !prev);
   };
 
+  const validate = () => {
+    const errors = {
+      name: validateField("name", data.name),
+      email: validateField("email", data.email),
+      password: validateField("password", data.password),
+    };
+    setErrors(errors);
+    return Object.values(errors).every((error) => !error);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (validate()) {
+      dispatch(signUp(data.email, data.password, data.name, navigate));
+    }
   };
 
   return (
@@ -28,25 +58,31 @@ function Register() {
         <Input
           placeholder={"Имя"}
           type={"text"}
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-          extraClass="mb-6"
+          onChange={(e) => onChange("name", e.target.value)}
+          value={data.name}
+          extraClass={`mb-6 ${styles.register__field}`}
+          errorText={errors.name}
+          error={!!errors.name}
         />
         <Input
           placeholder={"E-mail"}
-          type={"email"}
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-          extraClass="mb-6"
+          type={"text"}
+          onChange={(e) => onChange("email", e.target.value)}
+          value={data.email}
+          extraClass={`mb-6 ${styles.register__field}`}
+          errorText={errors.email}
+          error={!!errors.email}
         />
         <Input
           placeholder={"Пароль"}
           type={showPassword ? "text" : "password"}
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
+          onChange={(e) => onChange("password", e.target.value)}
+          value={data.password}
           icon={showPassword ? "HideIcon" : "ShowIcon"}
           onIconClick={handleTogglePasswordVisible}
-          extraClass={`mb-6 ${styles.register__password}`}
+          extraClass={`mb-6 ${styles.register__field}`}
+          errorText={errors.password}
+          error={!!errors.password}
         />
         <Button
           htmlType="submit"
