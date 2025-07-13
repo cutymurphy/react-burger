@@ -76,7 +76,7 @@ export function logOut(navigate) {
     })
       .then(() => {
         localStorage.removeItem("refreshToken");
-        navigate("/login");
+        navigate("/login", { replace: true });
         dispatch({ type: LOG_OUT });
       })
       .catch(() => {
@@ -138,7 +138,7 @@ export function handleForgotPassword(email, navigate) {
     })
       .then(() => {
         dispatch({ type: SET_CAN_RESET_PASSWORD });
-        navigate("/reset-password", { replace: true });
+        navigate("/reset-password");
       })
       .catch(() => {
         alert("Ошибка при отправке письма на почту");

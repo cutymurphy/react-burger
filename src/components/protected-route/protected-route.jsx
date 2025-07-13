@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../services/actions/user";
 import { RingLoader } from "react-spinners";
 import styles from "./protected-route.module.css";
+import PropTypes from "prop-types";
 
 function ProtectedRouteElement({ element, isProtectedFromUnAuthUser = false }) {
   const dispatch = useDispatch();
@@ -38,5 +39,10 @@ function ProtectedRouteElement({ element, isProtectedFromUnAuthUser = false }) {
 
   return element;
 }
+
+ProtectedRouteElement.propTypes = {
+  element: PropTypes.element.isRequired,
+  isProtectedFromUnAuthUser: PropTypes.bool,
+};
 
 export default ProtectedRouteElement;

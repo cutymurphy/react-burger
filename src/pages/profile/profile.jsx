@@ -48,7 +48,9 @@ function Profile() {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSaveProfile = () => {
+  const handleSaveProfile = (e) => {
+    e.preventDefault();
+
     if (validate()) {
       const changedData = {};
       for (const field in editedFields) {
@@ -74,7 +76,7 @@ function Profile() {
   }, [storeUser]);
 
   return (
-    <form className={styles.profile__form}>
+    <form className={styles.profile__form} onSubmit={handleSaveProfile}>
       <Input
         placeholder={"Имя"}
         type={"text"}
@@ -121,12 +123,7 @@ function Profile() {
           >
             Отмена
           </Button>
-          <Button
-            htmlType="button"
-            type="primary"
-            size="medium"
-            onClick={handleSaveProfile}
-          >
+          <Button htmlType="submit" type="primary" size="medium">
             Сохранить
           </Button>
         </div>
