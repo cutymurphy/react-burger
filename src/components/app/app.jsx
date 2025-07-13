@@ -14,6 +14,7 @@ import OrdersHistory from "../../pages/orders-history";
 import ProfileWrapper from "../profile-wrapper";
 import Order from "../../pages/order";
 import IngredientModal from "../ingredient-modal";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const location = useLocation();
@@ -53,6 +54,7 @@ function App() {
           </Routes>
         )}
       </div>
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 }

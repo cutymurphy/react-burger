@@ -1,4 +1,4 @@
-import { request } from "../../utils/request";
+import toast from "react-hot-toast";
 import { requestWithRefresh } from "../../utils/requestWithRefresh";
 import { CLEAR_CONSTRUCTOR } from "./builder";
 import { CLEAR_INGREDIENTS_COUNT } from "./ingredients";
@@ -28,10 +28,11 @@ export function postOrder(ingredientIds, accessToken) {
           });
           dispatch({ type: CLEAR_INGREDIENTS_COUNT });
           dispatch({ type: CLEAR_CONSTRUCTOR });
+          toast.success("Заказ успешно создан");
         }, 500);
       })
       .catch(() => {
-        alert("Произошла ошибка при создании заказа");
+        toast.error("Произошла ошибка при создании заказа");
         dispatch({ type: POST_ORDER_ERROR });
       });
   };

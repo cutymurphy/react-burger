@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { request } from "../../utils/request";
 import { requestWithRefresh } from "../../utils/requestWithRefresh";
 
@@ -29,9 +30,10 @@ export function signUp(email, password, name, navigate) {
         });
 
         navigate("/", { replace: true });
+        toast.success("Вы успешно зарегистрировались");
       })
       .catch(() => {
-        alert("Произошла ошибка при регистрации");
+        toast.error("Произошла ошибка при регистрации");
       });
   };
 }
@@ -59,9 +61,12 @@ export function logIn(email, password, navigate, locationState) {
             ? locationState.fromPath
             : "/";
         navigate(from, { replace: true });
+        toast.success("Вы успешно вошли в аккаунт");
       })
       .catch(() => {
-        alert("Ошибка при входе");
+        toast.error(
+          "Произошла ошибка при входе. Проверьте корректность данных."
+        );
       });
   };
 }
@@ -78,9 +83,10 @@ export function logOut(navigate) {
         localStorage.removeItem("refreshToken");
         navigate("/login", { replace: true });
         dispatch({ type: LOG_OUT });
+        toast.success("Вы успешно вышли из аккаунта");
       })
       .catch(() => {
-        alert("Ошибка при выходе из приложения");
+        toast.error("Ошибка при выходе из аккаунта");
       });
   };
 }
@@ -122,9 +128,10 @@ export function editUser(accessToken, newUser) {
     )
       .then((data) => {
         dispatch({ type: SET_USER, user: data.user });
+        toast.success("Информация успешно отредактирована");
       })
       .catch(() => {
-        alert("Ошибка при редактировании пользователя");
+        toast.error("Произошла ошибка при редактировании пользователя");
       });
   };
 }
@@ -139,9 +146,10 @@ export function handleForgotPassword(email, navigate) {
       .then(() => {
         dispatch({ type: SET_CAN_RESET_PASSWORD });
         navigate("/reset-password");
+        toast.success("Письмо с кодом отправлено на почту");
       })
       .catch(() => {
-        alert("Ошибка при отправке письма на почту");
+        toast.error("Ошибка при отправке письма на почту");
       });
   };
 }
@@ -154,7 +162,10 @@ export const handleResetPassword = async (password, token, navigate) => {
       body: JSON.stringify({ password, token }),
     });
     navigate("/login", { replace: true });
+    toast.success(
+      "Пароль успешно восстановлен. Войдите в приложение под новыми данными."
+    );
   } catch (err) {
-    alert("Ошибка при восстановлении пароля");
+    toast.error("Ошибка при восстановлении пароля");
   }
 };
