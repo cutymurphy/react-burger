@@ -1,4 +1,5 @@
 import { request } from "../../utils/request";
+import { requestWithRefresh } from "../../utils/requestWithRefresh";
 import { CLEAR_CONSTRUCTOR } from "./builder";
 import { CLEAR_INGREDIENTS_COUNT } from "./ingredients";
 
@@ -8,13 +9,14 @@ export const POST_ORDER_SUCCESS = "POST_ORDER_SUCCESS";
 
 export const CLOSE_ORDER = "CLOSE_ORDER";
 
-export function postOrder(ingredientIds) {
+export function postOrder(ingredientIds, accessToken) {
   return function (dispatch) {
     dispatch({ type: POST_ORDER_REQUEST });
-    request("/orders", {
+    requestWithRefresh("/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + accessToken,
       },
       body: JSON.stringify({ ingredients: ingredientIds }),
     })

@@ -25,6 +25,8 @@ function BurgerConstructor() {
     (store) => store.builder
   );
   const { order, orderFailed } = useSelector((store) => store.order);
+  const accessToken = useSelector((store) => store.user.accessToken);
+  const refreshToken = localStorage.getItem("refreshToken");
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
@@ -72,13 +74,17 @@ function BurgerConstructor() {
   };
 
   const createOrder = () => {
-    const ingredientIds = [
-      mainBun._id,
-      ...selectedIngredients.map((item) => item._id),
-      mainBun._id,
-    ];
+    if (refreshToken) {
+      const ingredientIds = [
+        mainBun._id,
+        ...selectedIngredients.map((item) => item._id),
+        mainBun._id,
+      ];
 
-    dispatch(postOrder(ingredientIds));
+      dispatch(postOrder(ingredientIds, accessToken));
+    } else {
+      navigate("/login");
+    }
   };
 
   const onOrderModalClose = () => {
