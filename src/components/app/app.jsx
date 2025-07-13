@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import AppHeader from "../app-header";
 import styles from "./app.module.css";
 import Home from "../../pages/home";
@@ -13,38 +13,47 @@ import ProtectedRouteElement from "../protected-route";
 import OrdersHistory from "../../pages/orders-history";
 import ProfileWrapper from "../profile-wrapper";
 import Order from "../../pages/order";
+import IngredientModal from "../ingredient-modal";
 
 function App() {
+  const location = useLocation();
+
+  const state = location.state;
+  const background = state && state.background;
+
   return (
-    <BrowserRouter>
-      <div className={styles.app}>
-        <AppHeader />
-        <div className={styles.page}>
+    <div className={styles.app}>
+      <AppHeader />
+      <div className={styles.page}>
+        <Routes location={background || location}>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRouteElement
+                element={<ProfileWrapper />}
+                isProtectedFromUnAuthUser
+              />
+            }
+          >
+            <Route index element={<Profile />} />
+            <Route path="orders" element={<OrdersHistory />} />
+            <Route path="orders/:number" element={<Order />} />
+          </Route>
+          <Route path="/ingredients/:id" element={<Ingredient />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        {background && (
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRouteElement
-                  element={<ProfileWrapper />}
-                  isProtectedFromUnAuthUser
-                />
-              }
-            >
-              <Route index element={<Profile />} />
-              <Route path="orders" element={<OrdersHistory />} />
-              <Route path="orders/:number" element={<Order />} />
-            </Route>
-            <Route path="/ingredients/:id" element={<Ingredient />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="/ingredients/:id" element={<IngredientModal />} />
           </Routes>
-        </div>
+        )}
       </div>
-    </BrowserRouter>
+    </div>
   );
 }
 

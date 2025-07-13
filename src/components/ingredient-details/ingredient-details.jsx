@@ -6,6 +6,8 @@ function IngredientDetails() {
     (store) => store.ingredient.selectedIngredient
   );
 
+  if (!selectedIngredient) return null;
+
   return (
     <section className={styles.details}>
       <img
