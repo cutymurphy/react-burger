@@ -4,7 +4,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./login.module.css";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logIn } from "../../services/actions/user";
 import { validateField } from "../../utils/validation";
@@ -17,6 +17,8 @@ const initialInfo = {
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { state } = useLocation();
+  const refreshToken = localStorage.getItem("refreshToken");
 
   const [data, setData] = useState({ ...initialInfo });
   const [errors, setErrors] = useState({ ...initialInfo });
@@ -45,9 +47,13 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      dispatch(logIn(data.email, data.password, navigate));
+      dispatch(logIn(data.email, data.password, navigate, state));
     }
   };
+
+  if (refreshToken) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className={styles.login}>

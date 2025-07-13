@@ -6,6 +6,7 @@ export const LOG_IN = "LOG_IN";
 export const LOG_OUT = "LOG_OUT";
 export const SET_TOKEN = "SET_TOKEN";
 export const SET_USER = "SET_USER";
+export const SET_CAN_RESET_PASSWORD = "SET_CAN_RESET_PASSWORD";
 
 export function signUp(email, password, name, navigate) {
   return function (dispatch) {
@@ -35,7 +36,7 @@ export function signUp(email, password, name, navigate) {
   };
 }
 
-export function logIn(email, password, navigate) {
+export function logIn(email, password, navigate, locationState) {
   return function (dispatch) {
     request("/auth/login", {
       method: "POST",
@@ -53,7 +54,11 @@ export function logIn(email, password, navigate) {
           accessToken,
         });
 
-        navigate("/", { replace: true });
+        const from =
+          locationState && locationState.fromPath
+            ? locationState.fromPath
+            : "/";
+        navigate(from, { replace: true });
       })
       .catch(() => {
         alert("Ошибка при входе");
@@ -123,3 +128,33 @@ export function editUser(accessToken, newUser) {
       });
   };
 }
+
+export function handleForgotPassword(email, navigate) {
+  return function (dispatch) {
+    request("/password-reset", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    })
+      .then(() => {
+        dispatch({ type: SET_CAN_RESET_PASSWORD });
+        navigate("/reset-password", { replace: true });
+      })
+      .catch(() => {
+        alert("Ошибка при отправке письма на почту");
+      });
+  };
+}
+
+export const handleResetPassword = async (password, token, navigate) => {
+  try {
+    await request("/password-reset/reset", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password, token }),
+    });
+    navigate("/login", { replace: true });
+  } catch (err) {
+    alert("Ошибка при восстановлении пароля");
+  }
+};

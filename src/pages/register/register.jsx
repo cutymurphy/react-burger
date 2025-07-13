@@ -4,7 +4,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./register.module.css";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { signUp } from "../../services/actions/user";
 import { useDispatch } from "react-redux";
 import { validateField } from "../../utils/validation";
@@ -18,6 +18,7 @@ const initialInfo = {
 function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const refreshToken = localStorage.getItem("refreshToken");
 
   const [data, setData] = useState({ ...initialInfo });
   const [errors, setErrors] = useState({ ...initialInfo });
@@ -50,6 +51,10 @@ function Register() {
       dispatch(signUp(data.email, data.password, data.name, navigate));
     }
   };
+
+  if (refreshToken) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className={styles.register}>

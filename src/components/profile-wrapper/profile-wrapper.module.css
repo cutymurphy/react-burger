@@ -1,0 +1,36 @@
+.wrapper {
+  position: absolute;
+  top: 88px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile__sections {
+  display: flex;
+  gap: 60px;
+}
+
+.profile__menu {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+}
+
+.profile__menu_item {
+  margin: 20px 0;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.profile__menu_item:hover {
+  opacity: 60%;
+}
+
+.profile__menu_info {
+  opacity: 50%;
+  margin-top: 80px;
+}

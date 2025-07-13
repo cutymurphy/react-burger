@@ -4,25 +4,33 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./forgot-password.module.css";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { validateField } from "../../utils/validation";
-import { handleForgotPassword } from "../../utils/resetPasswordApi";
+import { handleForgotPassword } from "../../services/actions/user";
+import { useDispatch } from "react-redux";
 
 function ForgotPassword() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const refreshToken = localStorage.getItem("refreshToken");
+
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const error = validateField("email", email);
     if (error) {
       setEmailError(error);
     } else {
-      await handleForgotPassword(email, navigate);
+      dispatch(handleForgotPassword(email, navigate));
     }
   };
+
+  if (refreshToken) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className={styles.forgot_password}>

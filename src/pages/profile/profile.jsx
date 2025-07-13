@@ -4,16 +4,13 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./profile.module.css";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { editUser, logOut } from "../../services/actions/user";
+import { editUser } from "../../services/actions/user";
 import { initialEdit, initialInfo } from "./utils";
 import { validateField } from "../../utils/validation";
 
 function Profile() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
   const { user: storeUser, accessToken } = useSelector((store) => store.user);
   const initialUser = { ...storeUser, password: "" };
 
@@ -77,96 +74,64 @@ function Profile() {
   }, [storeUser]);
 
   return (
-    <main className={styles.profile}>
-      <div className={styles.profile__sections}>
-        <nav className={styles.profile__menu}>
-          <p
-            className={`text text_type_main-medium ${
-              pathname !== "/profile" && "text_color_inactive"
-            } ${styles.profile__menu_item}`}
-            onClick={() => navigate("/profile")}
+    <form className={styles.profile__form}>
+      <Input
+        placeholder={"Имя"}
+        type={"text"}
+        onChange={(e) => onChange("name", e.target.value)}
+        value={profile.name}
+        icon={editOpen.name ? "CloseIcon" : "EditIcon"}
+        onIconClick={() => onChangeEditOpen("name")}
+        extraClass={`mb-6 ${styles.profile__field}`}
+        disabled={!editOpen.name}
+        errorText={profileErrors.name}
+        error={!!profileErrors.name}
+      />
+      <Input
+        placeholder={"Логин"}
+        type={"text"}
+        onChange={(e) => onChange("email", e.target.value)}
+        value={profile.email}
+        icon={editOpen.email ? "CloseIcon" : "EditIcon"}
+        onIconClick={() => onChangeEditOpen("email")}
+        extraClass={`mb-6 ${styles.profile__field}`}
+        disabled={!editOpen.email}
+        errorText={profileErrors.email}
+        error={!!profileErrors.email}
+      />
+      <Input
+        placeholder={"Пароль"}
+        type={"password"}
+        onChange={(e) => onChange("password", e.target.value)}
+        value={profile.password}
+        icon={editOpen.password ? "CloseIcon" : "EditIcon"}
+        onIconClick={() => onChangeEditOpen("password")}
+        extraClass={`mb-6 ${styles.profile__field}`}
+        disabled={!editOpen.password}
+        errorText={profileErrors.password}
+        error={!!profileErrors.password}
+      />
+      {Object.values(editedFields).some((value) => !!value) && (
+        <div className={styles.profile__btns}>
+          <Button
+            htmlType="button"
+            type="secondary"
+            size="medium"
+            onClick={clearForm}
           >
-            Профиль
-          </p>
-          <p
-            className={`text text_type_main-medium ${
-              pathname !== "/profile/orders" && "text_color_inactive"
-            } ${styles.profile__menu_item}`}
+            Отмена
+          </Button>
+          <Button
+            htmlType="button"
+            type="primary"
+            size="medium"
+            onClick={handleSaveProfile}
           >
-            История заказов
-          </p>
-          <p
-            className={`text text_type_main-medium text_color_inactive ${styles.profile__menu_item}`}
-            onClick={() => dispatch(logOut(navigate))}
-          >
-            Выход
-          </p>
-          <p
-            className={`text text_type_main-default text_color_inactive ${styles.profile__menu_info}`}
-          >
-            В этом разделе вы можете изменить свои персональные данные
-          </p>
-        </nav>
-        <form className={styles.profile__form}>
-          <Input
-            placeholder={"Имя"}
-            type={"text"}
-            onChange={(e) => onChange("name", e.target.value)}
-            value={profile.name}
-            icon={editOpen.name ? "CloseIcon" : "EditIcon"}
-            onIconClick={() => onChangeEditOpen("name")}
-            extraClass={`mb-6 ${styles.profile__field}`}
-            disabled={!editOpen.name}
-            errorText={profileErrors.name}
-            error={!!profileErrors.name}
-          />
-          <Input
-            placeholder={"Логин"}
-            type={"text"}
-            onChange={(e) => onChange("email", e.target.value)}
-            value={profile.email}
-            icon={editOpen.email ? "CloseIcon" : "EditIcon"}
-            onIconClick={() => onChangeEditOpen("email")}
-            extraClass={`mb-6 ${styles.profile__field}`}
-            disabled={!editOpen.email}
-            errorText={profileErrors.email}
-            error={!!profileErrors.email}
-          />
-          <Input
-            placeholder={"Пароль"}
-            type={"password"}
-            onChange={(e) => onChange("password", e.target.value)}
-            value={profile.password}
-            icon={editOpen.password ? "CloseIcon" : "EditIcon"}
-            onIconClick={() => onChangeEditOpen("password")}
-            extraClass={`mb-6 ${styles.profile__field}`}
-            disabled={!editOpen.password}
-            errorText={profileErrors.password}
-            error={!!profileErrors.password}
-          />
-          {Object.values(editedFields).some((value) => !!value) && (
-            <div className={styles.profile__btns}>
-              <Button
-                htmlType="button"
-                type="secondary"
-                size="medium"
-                onClick={clearForm}
-              >
-                Отмена
-              </Button>
-              <Button
-                htmlType="button"
-                type="primary"
-                size="medium"
-                onClick={handleSaveProfile}
-              >
-                Сохранить
-              </Button>
-            </div>
-          )}
-        </form>
-      </div>
-    </main>
+            Сохранить
+          </Button>
+        </div>
+      )}
+    </form>
   );
 }
 

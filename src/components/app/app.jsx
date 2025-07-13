@@ -1,53 +1,50 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AppHeader from "../app-header";
-import BurgerIngredients from "../burger-ingredients";
 import styles from "./app.module.css";
-import BurgerConstructor from "../burger-constructor";
-import { useEffect } from "react";
-import { RingLoader } from "react-spinners";
-import { useDispatch, useSelector } from "react-redux";
-import { getIngredients } from "../../services/actions/ingredients";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import Home from "../../pages/home";
+import Login from "../../pages/login";
+import Register from "../../pages/register";
+import ForgotPassword from "../../pages/forgot-password";
+import ResetPassword from "../../pages/reset-password";
+import Profile from "../../pages/profile";
+import Ingredient from "../../pages/ingredient";
+import NotFound from "../../pages/not-found";
+import ProtectedRouteElement from "../protected-route";
+import OrdersHistory from "../../pages/orders-history";
+import ProfileWrapper from "../profile-wrapper";
+import Order from "../../pages/order";
 
 function App() {
-  const dispatch = useDispatch();
-  const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
-    (store) => store.ingredients
-  );
-  const orderRequest = useSelector((store) => store.order.orderRequest);
-
-  const isLoading = ingredientsRequest || orderRequest;
-  const hasError = ingredientsFailed;
-  const canRenderMain = !isLoading && !hasError && ingredients.length > 0;
-
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
-
   return (
-    <div className={styles.app}>
-      <AppHeader />
-      {isLoading && (
-        <div className={styles.state}>
-          <RingLoader color="var(--dark-grey)" loading size={100} />
+    <BrowserRouter>
+      <div className={styles.app}>
+        <AppHeader />
+        <div className={styles.page}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRouteElement
+                  element={<ProfileWrapper />}
+                  isProtectedFromUnAuthUser
+                />
+              }
+            >
+              <Route index element={<Profile />} />
+              <Route path="orders" element={<OrdersHistory />} />
+              <Route path="orders/:number" element={<Order />} />
+            </Route>
+            <Route path="/ingredients/:id" element={<Ingredient />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </div>
-      )}
-      {hasError && !isLoading && (
-        <div className={styles.state}>
-          <p className="text text_type_main-default text_color_inactive">
-            Произошла ошибка при получении ингредиентов
-          </p>
-        </div>
-      )}
-      {canRenderMain && (
-        <main className={styles.main}>
-          <DndProvider backend={HTML5Backend}>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </DndProvider>
-        </main>
-      )}
-    </div>
+      </div>
+    </BrowserRouter>
   );
 }
 

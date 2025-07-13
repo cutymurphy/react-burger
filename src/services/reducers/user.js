@@ -1,8 +1,16 @@
-import { LOG_IN, LOG_OUT, SET_USER, SIGN_UP, SET_TOKEN } from "../actions/user";
+import {
+  LOG_IN,
+  LOG_OUT,
+  SET_USER,
+  SIGN_UP,
+  SET_TOKEN,
+  SET_CAN_RESET_PASSWORD,
+} from "../actions/user";
 
 const initialUser = {
   user: null,
   accessToken: "",
+  canResetPassword: false,
 };
 
 export const userReducer = (state = initialUser, action) => {
@@ -30,6 +38,12 @@ export const userReducer = (state = initialUser, action) => {
       return {
         ...state,
         user: action.user,
+      };
+    }
+    case SET_CAN_RESET_PASSWORD: {
+      return {
+        ...state,
+        canResetPassword: true,
       };
     }
     default: {

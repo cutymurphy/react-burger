@@ -4,9 +4,10 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./reset-password.module.css";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { validateField } from "../../utils/validation";
-import { handleResetPassword } from "../../utils/resetPasswordApi";
+import { handleResetPassword } from "../../services/actions/user";
+import { useSelector } from "react-redux";
 
 const initialInfo = {
   password: "",
@@ -15,6 +16,8 @@ const initialInfo = {
 
 function ResetPassword() {
   const navigate = useNavigate();
+  const canResetPassword = useSelector((store) => store.user.canResetPassword);
+  const refreshToken = localStorage.getItem("refreshToken");
 
   const [data, setData] = useState({ ...initialInfo });
   const [errors, setErrors] = useState({ ...initialInfo });
@@ -46,6 +49,14 @@ function ResetPassword() {
       await handleResetPassword(data.password, data.code, navigate);
     }
   };
+
+  if (refreshToken) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (!canResetPassword) {
+    return <Navigate to="/forgot-password" replace />;
+  }
 
   return (
     <div className={styles.reset_password}>
