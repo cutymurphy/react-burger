@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { request } from "../../utils/request";
 
 export const GET_INGREDIENTS_REQUEST = "GET_INGREDIENTS_REQUEST";
@@ -22,6 +23,7 @@ export function getIngredients() {
       })
       .catch(() => {
         dispatch({ type: GET_INGREDIENTS_ERROR });
+        toast.error("Произошла ошибка при получении ингредиентов");
       });
   };
 }

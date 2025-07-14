@@ -1,0 +1,19 @@
+.profile__form {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+}
+
+.profile__field svg {
+  margin-left: 24px;
+}
+
+.profile__field p {
+  margin-bottom: 0;
+}
+
+.profile__btns {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}

@@ -14,9 +14,12 @@ import {
 import { SELECT_INGREDIENT } from "../../services/actions/ingredient-details";
 import { useDrag, useDrop } from "react-dnd";
 import { useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function IngredientDraggable({ ingredient, index }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const ref = useRef(null);
 
   const [, drag] = useDrag({
@@ -61,6 +64,9 @@ function IngredientDraggable({ ingredient, index }) {
 
   const onIngredientClick = (ingredient) => {
     dispatch({ type: SELECT_INGREDIENT, ingredient });
+    navigate(`/ingredients/${ingredient._id}`, {
+      state: { background: location },
+    });
   };
 
   const deleteIngredient = (e) => {

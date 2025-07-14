@@ -1,0 +1,10 @@
+.wrapper {
+  width: 480px;
+  background-color: var(--modal-bg);
+  border-radius: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+  box-sizing: border-box;
+}

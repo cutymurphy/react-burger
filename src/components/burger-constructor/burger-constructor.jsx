@@ -4,31 +4,29 @@ import {
   ConstructorElement,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import IngredientDetails from "../ingredient-details";
 import OrderDetails from "../order-details";
 import Modal from "../modal";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  SELECT_INGREDIENT,
-  UNSELECT_INGREDIENT,
-} from "../../services/actions/ingredient-details";
+import { SELECT_INGREDIENT } from "../../services/actions/ingredient-details";
 import { CLOSE_ORDER, postOrder } from "../../services/actions/order";
 import { useMemo } from "react";
 import { useDrop } from "react-dnd";
 import { addIngredient, CHANGE_BUN } from "../../services/actions/builder";
 import { INCREASE_INGREDIENT_COUNT } from "../../services/actions/ingredients";
 import IngredientDraggable from "../ingredient-draggable";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const ingredients = useSelector((store) => store.ingredients.ingredients);
   const { selectedIngredients, mainBun } = useSelector(
     (store) => store.builder
   );
-  const selectedIngredient = useSelector(
-    (store) => store.ingredient.selectedIngredient
-  );
   const { order, orderFailed } = useSelector((store) => store.order);
+  const accessToken = useSelector((store) => store.user.accessToken);
+  const refreshToken = localStorage.getItem("refreshToken");
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
@@ -70,20 +68,23 @@ function BurgerConstructor() {
 
   const onIngredientClick = (ingredient) => {
     dispatch({ type: SELECT_INGREDIENT, ingredient });
-  };
-
-  const onIngredientClose = () => {
-    dispatch({ type: UNSELECT_INGREDIENT });
+    navigate(`/ingredients/${ingredient._id}`, {
+      state: { background: location },
+    });
   };
 
   const createOrder = () => {
-    const ingredientIds = [
-      mainBun._id,
-      ...selectedIngredients.map((item) => item._id),
-      mainBun._id,
-    ];
+    if (refreshToken) {
+      const ingredientIds = [
+        mainBun._id,
+        ...selectedIngredients.map((item) => item._id),
+        mainBun._id,
+      ];
 
-    dispatch(postOrder(ingredientIds));
+      dispatch(postOrder(ingredientIds, accessToken));
+    } else {
+      navigate("/login");
+    }
   };
 
   const onOrderModalClose = () => {
@@ -162,11 +163,6 @@ function BurgerConstructor() {
           Оформить заказ
         </Button>
       </footer>
-      {selectedIngredient && (
-        <Modal title="Детали ингредиента" onClose={onIngredientClose}>
-          <IngredientDetails />
-        </Modal>
-      )}
       {order.number !== null && !orderFailed && (
         <Modal onClose={onOrderModalClose}>
           <OrderDetails onTickClick={onOrderModalClose} />

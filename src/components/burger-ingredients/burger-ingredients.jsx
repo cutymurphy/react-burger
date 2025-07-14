@@ -2,22 +2,17 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
-import IngredientDetails from "../ingredient-details";
-import Modal from "../modal";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  SELECT_INGREDIENT,
-  UNSELECT_INGREDIENT,
-} from "../../services/actions/ingredient-details";
+import { SELECT_INGREDIENT } from "../../services/actions/ingredient-details";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function BurgerIngredients() {
   const scrollContainerRef = useRef(null);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const ingredients = useSelector((store) => store.ingredients.ingredients);
-  const selectedIngredient = useSelector(
-    (store) => store.ingredient.selectedIngredient
-  );
 
   const [current, setCurrent] = useState("bun");
 
@@ -73,10 +68,9 @@ function BurgerIngredients() {
 
   const onIngredientClick = (ingredient) => {
     dispatch({ type: SELECT_INGREDIENT, ingredient });
-  };
-
-  const onIngredientClose = () => {
-    dispatch({ type: UNSELECT_INGREDIENT });
+    navigate(`/ingredients/${ingredient._id}`, {
+      state: { background: location },
+    });
   };
 
   return (
@@ -124,11 +118,6 @@ function BurgerIngredients() {
           </section>
         ))}
       </div>
-      {selectedIngredient && (
-        <Modal title="Детали ингредиента" onClose={onIngredientClose}>
-          <IngredientDetails />
-        </Modal>
-      )}
     </section>
   );
 }

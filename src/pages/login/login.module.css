@@ -1,0 +1,35 @@
+.login {
+  position: absolute;
+  top: 88px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login__form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.login__field svg {
+  margin-left: 24px;
+}
+
+.login__field p {
+  margin-bottom: 0;
+}
+
+.login__footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login__link {
+  color: var(--interface-accent);
+  cursor: pointer;
+}
