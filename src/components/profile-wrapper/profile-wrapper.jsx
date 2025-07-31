@@ -1,4 +1,4 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useMatch, useNavigate } from "react-router-dom";
 import styles from "./profile-wrapper.module.css";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../services/actions/user";
@@ -6,7 +6,7 @@ import { logOut } from "../../services/actions/user";
 function ProfileWrapper() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
+  const isProfile = useMatch("/profile");
 
   const handleLogOut = () => {
     dispatch(logOut(navigate));
@@ -16,22 +16,29 @@ function ProfileWrapper() {
     <main className={styles.wrapper}>
       <div className={styles.profile__sections}>
         <nav className={styles.profile__menu}>
-          <p
-            className={`text text_type_main-medium ${
-              pathname !== "/profile" && "text_color_inactive"
-            } ${styles.profile__menu_item}`}
-            onClick={() => navigate("/profile")}
+          {/* 
+          //TODO: анимации */}
+          <NavLink
+            to="/profile"
+            end
+            className={({ isActive }) =>
+              `text text_type_main-medium ${styles.profile__menu_item} ${
+                isActive && styles.profile__menu_item_active
+              }`
+            }
           >
             Профиль
-          </p>
-          <p
-            className={`text text_type_main-medium ${
-              pathname !== "/profile/orders" && "text_color_inactive"
-            } ${styles.profile__menu_item}`}
-            onClick={() => navigate("/profile/orders")}
+          </NavLink>
+          <NavLink
+            to="/profile/orders"
+            className={({ isActive }) =>
+              `text text_type_main-medium ${styles.profile__menu_item} ${
+                isActive && styles.profile__menu_item_active
+              }`
+            }
           >
             История заказов
-          </p>
+          </NavLink>
           <p
             className={`text text_type_main-medium text_color_inactive ${styles.profile__menu_item}`}
             onClick={handleLogOut}
@@ -41,7 +48,7 @@ function ProfileWrapper() {
           <p
             className={`text text_type_main-default text_color_inactive ${styles.profile__menu_info}`}
           >
-            {pathname === "/profile"
+            {isProfile
               ? "В этом разделе вы можете изменить свои персональные данные"
               : "В этом разделе вы можете просмотреть свою историю заказов"}
           </p>

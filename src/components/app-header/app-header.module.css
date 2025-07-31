@@ -14,12 +14,9 @@
   justify-content: space-between;
 }
 
-.header__nav {
+.header__list {
   display: flex;
   align-items: center;
-  list-style: none;
-  margin: 0;
-  padding: 0;
 }
 
 .header__logo {
@@ -32,11 +29,16 @@
 .header__btn {
   display: flex;
   align-items: center;
-  cursor: pointer;
+  text-decoration: none;
+  color: var(--dark-grey);
 }
 
 .header__btn.disabled {
   cursor: not-allowed;
+}
+
+.header__btn_active {
+  color: var(--white);
 }
 
 @media (max-width: 1279.89px) {

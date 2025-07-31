@@ -24,10 +24,16 @@
   margin: 20px 0;
   cursor: pointer;
   transition: 0.3s;
+  text-decoration: none;
+  color: var(--dark-grey);
 }
 
 .profile__menu_item:hover {
   opacity: 60%;
+}
+
+.profile__menu_item_active {
+  color: var(--white);
 }
 
 .profile__menu_info {

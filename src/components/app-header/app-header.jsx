@@ -5,66 +5,71 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./app-header.module.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 function AppHeader() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-
-  const isMainActive =
-    pathname.length === 1 || pathname.includes("ingredients");
-  const isProfileActive = pathname.includes("profile");
+  const isIngredientOpen = pathname.includes("ingredients");
 
   return (
     <header className={styles.header}>
       <nav className={`${styles.header__content} pt-4 pb-4`}>
-        <ul className={styles.header__nav}>
-          <li
+        <div className={styles.header__list}>
+          <NavLink
             className={`${styles.header__btn} pt-4 pr-5 pb-4 pl-5 mr-2`}
-            onClick={() => navigate("/")}
+            to="/"
           >
-            <BurgerIcon
-              type={isMainActive ? "primary" : "secondary"}
-              className="mr-2"
-            />
-            <p
-              className={`text text_type_main-default ${
-                !isMainActive && "text_color_inactive"
-              }`}
-            >
-              Конструктор
-            </p>
-          </li>
-          <li
+            {({ isActive }) => (
+              <>
+                <BurgerIcon
+                  type={isActive || isIngredientOpen ? "primary" : "secondary"}
+                  className="mr-2"
+                />
+                <p
+                  className={`text text_type_main-default ${
+                    (isActive || isIngredientOpen) && styles.header__btn_active
+                  }`}
+                >
+                  Конструктор
+                </p>
+              </>
+            )}
+          </NavLink>
+          <NavLink
             className={`${styles.header__btn} ${styles.disabled} pt-4 pr-5 pb-4 pl-5`}
           >
             <ListIcon type="secondary" className="mr-2" />
             <p className="text text_type_main-default text_color_inactive">
               Лента заказов
             </p>
-          </li>
-        </ul>
+          </NavLink>
+        </div>
         <div onClick={() => navigate("/")} className={styles.header__logo}>
           <Logo />
         </div>
-        <ul className={styles.header__nav}>
-          <li
+        <div className={styles.header__list}>
+          <NavLink
             className={`${styles.header__btn} pt-4 pr-5 pb-4 pl-5`}
-            onClick={() => navigate("/profile")}
+            to="/profile"
           >
-            <ProfileIcon
-              type={isProfileActive ? "primary" : "secondary"}
-              className="mr-2"
-            />
-            <p
-              className={`text text_type_main-default ${
-                !isProfileActive && "text_color_inactive"
-              }`}
-            >
-              Личный кабинет
-            </p>
-          </li>
-        </ul>
+            {({ isActive }) => (
+              <>
+                <ProfileIcon
+                  type={isActive ? "primary" : "secondary"}
+                  className="mr-2"
+                />
+                <p
+                  className={`text text_type_main-default ${
+                    isActive && styles.header__btn_active
+                  }`}
+                >
+                  Личный кабинет
+                </p>
+              </>
+            )}
+          </NavLink>
+        </div>
       </nav>
     </header>
   );
