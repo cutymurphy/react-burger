@@ -16,8 +16,6 @@ function ProfileWrapper() {
     <main className={styles.wrapper}>
       <div className={styles.profile__sections}>
         <nav className={styles.profile__menu}>
-          {/* 
-          //TODO: анимации */}
           <NavLink
             to="/profile"
             end

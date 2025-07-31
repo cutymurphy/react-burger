@@ -56,6 +56,24 @@
   border: 2px dashed var(--dark-grey);
 }
 
+.fadeEnter {
+  opacity: 0.01;
+}
+
+.fadeEnterActive {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+
+.fadeExit {
+  opacity: 1;
+}
+
+.fadeExitActive {
+  opacity: 0.01;
+  transition: opacity 70ms linear;
+}
+
 @media (max-height: 960px) {
   .constructor__list {
     max-height: calc(

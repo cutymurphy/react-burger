@@ -15,6 +15,7 @@ import { addIngredient, CHANGE_BUN } from "../../services/actions/builder";
 import { INCREASE_INGREDIENT_COUNT } from "../../services/actions/ingredients";
 import IngredientDraggable from "../ingredient-draggable";
 import { useLocation, useNavigate } from "react-router-dom";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
@@ -112,13 +113,25 @@ function BurgerConstructor() {
               </div>
             )}
             <ul className={`${styles.constructor__list} pr-2`}>
-              {selectedIngredients.map((ingredient, index) => (
-                <IngredientDraggable
-                  key={ingredient.uniqueId}
-                  ingredient={ingredient}
-                  index={index}
-                />
-              ))}
+              <TransitionGroup component={null}>
+                {selectedIngredients.map((ingredient, index) => (
+                  <CSSTransition
+                    key={ingredient.uniqueId}
+                    timeout={300}
+                    classNames={{
+                      enter: styles.fadeEnter,
+                      enterActive: styles.fadeEnterActive,
+                      exit: styles.fadeExit,
+                      exitActive: styles.fadeExitActive,
+                    }}
+                  >
+                    <IngredientDraggable
+                      ingredient={ingredient}
+                      index={index}
+                    />
+                  </CSSTransition>
+                ))}
+              </TransitionGroup>
             </ul>
             {mainBun && (
               <div onClick={() => onIngredientClick(mainBun)} className="pr-2">
