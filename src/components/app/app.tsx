@@ -16,6 +16,7 @@ import Order from "../../pages/order";
 import IngredientModal from "../ingredient-modal";
 import { Toaster } from "react-hot-toast";
 import { FC } from "react";
+import { ERoutes } from "../../utils/routes";
 
 const App: FC = () => {
   const location = useLocation();
@@ -28,13 +29,13 @@ const App: FC = () => {
       <AppHeader />
       <div className={styles.page}>
         <Routes location={background || location}>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path={ERoutes.main} element={<Home />} />
+          <Route path={ERoutes.login} element={<Login />} />
+          <Route path={ERoutes.register} element={<Register />} />
+          <Route path={ERoutes.forgotPassword} element={<ForgotPassword />} />
+          <Route path={ERoutes.resetPassword} element={<ResetPassword />} />
           <Route
-            path="/profile"
+            path={ERoutes.profile}
             element={
               <ProtectedRouteElement
                 element={<ProfileWrapper />}
@@ -43,15 +44,18 @@ const App: FC = () => {
             }
           >
             <Route index element={<Profile />} />
-            <Route path="orders" element={<OrdersHistory />} />
-            <Route path="orders/:number" element={<Order />} />
+            <Route path={ERoutes.orders} element={<OrdersHistory />} />
+            <Route path={`${ERoutes.orders}/:number`} element={<Order />} />
           </Route>
-          <Route path="/ingredients/:id" element={<Ingredient />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path={`${ERoutes.ingredients}/:id`} element={<Ingredient />} />
+          <Route path={ERoutes.others} element={<NotFound />} />
         </Routes>
         {background && (
           <Routes>
-            <Route path="/ingredients/:id" element={<IngredientModal />} />
+            <Route
+              path={`${ERoutes.ingredients}/:id`}
+              element={<IngredientModal />}
+            />
           </Routes>
         )}
       </div>

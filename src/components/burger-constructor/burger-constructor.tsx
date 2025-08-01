@@ -19,6 +19,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { TIngredient } from "../../utils/types";
 import { Dispatch } from "redux";
 import { TDragItem } from "./types";
+import { ERoutes } from "../../utils/routes";
 
 const BurgerConstructor: FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
@@ -85,7 +86,7 @@ const BurgerConstructor: FC = () => {
 
   const onIngredientClick = (ingredient: TIngredient) => {
     dispatch({ type: SELECT_INGREDIENT, ingredient });
-    navigate(`/ingredients/${ingredient._id}`, {
+    navigate(`${ERoutes.ingredients}/${ingredient._id}`, {
       state: { background: location },
     });
   };
@@ -100,7 +101,7 @@ const BurgerConstructor: FC = () => {
 
       dispatch(postOrder(ingredientIds, accessToken));
     } else {
-      navigate("/login");
+      navigate(ERoutes.login);
     }
   };
 

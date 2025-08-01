@@ -7,6 +7,7 @@ import {
 import styles from "./app-header.module.css";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FC } from "react";
+import { ERoutes } from "../../utils/routes";
 
 const AppHeader: FC = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const AppHeader: FC = () => {
         <div className={styles.header__list}>
           <NavLink
             className={`${styles.header__btn} pt-4 pr-5 pb-4 pl-5 mr-2`}
-            to="/"
+            to={ERoutes.main}
           >
             {({ isActive }) => (
               <>
@@ -39,7 +40,7 @@ const AppHeader: FC = () => {
           </NavLink>
           <NavLink
             className={`${styles.header__btn} ${styles.disabled} pt-4 pr-5 pb-4 pl-5`}
-            to="/"
+            to={ERoutes.main}
           >
             <ListIcon type="secondary" className="mr-2" />
             <p className="text text_type_main-default text_color_inactive">
@@ -47,13 +48,16 @@ const AppHeader: FC = () => {
             </p>
           </NavLink>
         </div>
-        <div onClick={() => navigate("/")} className={styles.header__logo}>
+        <div
+          onClick={() => navigate(ERoutes.main)}
+          className={styles.header__logo}
+        >
           <Logo />
         </div>
         <div className={styles.header__list}>
           <NavLink
             className={`${styles.header__btn} pt-4 pr-5 pb-4 pl-5`}
-            to="/profile"
+            to={ERoutes.profile}
           >
             {({ isActive }) => (
               <>

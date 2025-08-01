@@ -5,6 +5,7 @@ import { getUser } from "../../services/actions/user";
 import { RingLoader } from "react-spinners";
 import styles from "./protected-route.module.css";
 import { IProtectedRouteElement } from "./types";
+import { ERoutes } from "../../utils/routes";
 
 const ProtectedRouteElement: FC<IProtectedRouteElement> = ({
   element,
@@ -37,7 +38,9 @@ const ProtectedRouteElement: FC<IProtectedRouteElement> = ({
   }
 
   if (isProtectedFromUnAuthUser && !user) {
-    return <Navigate to="/login" state={{ fromPath: pathname }} replace />;
+    return (
+      <Navigate to={ERoutes.login} state={{ fromPath: pathname }} replace />
+    );
   }
 
   return element;

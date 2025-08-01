@@ -9,6 +9,7 @@ import { validateField } from "../../utils/validation";
 import { handleResetPassword } from "../../services/actions/user";
 import { useSelector } from "react-redux";
 import { initialInfo, TResetPassword } from "./utils";
+import { ERoutes } from "../../utils/routes";
 
 const ResetPassword: FC = () => {
   const navigate = useNavigate();
@@ -52,11 +53,11 @@ const ResetPassword: FC = () => {
   };
 
   if (refreshToken) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={ERoutes.main} replace />;
   }
 
   if (!canResetPassword) {
-    return <Navigate to="/forgot-password" replace />;
+    return <Navigate to={ERoutes.forgotPassword} replace />;
   }
 
   return (
@@ -101,7 +102,7 @@ const ResetPassword: FC = () => {
           </p>
           <p
             className={`text text_type_main-default ${styles.reset_password__link}`}
-            onClick={() => navigate("/login")}
+            onClick={() => navigate(ERoutes.login)}
           >
             Войти
           </p>

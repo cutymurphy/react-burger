@@ -10,6 +10,7 @@ import { logIn } from "../../services/actions/user";
 import { validateField } from "../../utils/validation";
 import { Dispatch } from "redux";
 import { initialInfo, TLoginForm } from "./types";
+import { ERoutes } from "../../utils/routes";
 
 const Login: FC = () => {
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ const Login: FC = () => {
   };
 
   if (refreshToken) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={ERoutes.main} replace />;
   }
 
   return (
@@ -97,7 +98,7 @@ const Login: FC = () => {
           </p>
           <p
             className={`text text_type_main-default ${styles.login__link}`}
-            onClick={() => navigate("/register")}
+            onClick={() => navigate(ERoutes.register)}
           >
             Зарегистрироваться
           </p>
@@ -108,7 +109,7 @@ const Login: FC = () => {
           </p>
           <p
             className={`text text_type_main-default ${styles.login__link}`}
-            onClick={() => navigate("/forgot-password")}
+            onClick={() => navigate(ERoutes.forgotPassword)}
           >
             Восстановить пароль
           </p>

@@ -2,12 +2,13 @@ import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./not-found.module.css";
 import { useNavigate } from "react-router-dom";
 import { FC } from "react";
+import { ERoutes } from "../../utils/routes";
 
 const NotFound: FC = () => {
   const navigate = useNavigate();
 
   const handleGoHomePage = () => {
-    navigate("/", { replace: true });
+    navigate(ERoutes.main, { replace: true });
   };
 
   return (

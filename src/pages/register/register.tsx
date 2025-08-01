@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { validateField } from "../../utils/validation";
 import { initialInfo, TRegister } from "./utils";
 import { Dispatch } from "redux";
+import { ERoutes } from "../../utils/routes";
 
 const Register: FC = () => {
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ const Register: FC = () => {
   };
 
   if (refreshToken) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={ERoutes.main} replace />;
   }
 
   return (
@@ -108,7 +109,7 @@ const Register: FC = () => {
           </p>
           <p
             className={`text text_type_main-default ${styles.register__link}`}
-            onClick={() => navigate("/login")}
+            onClick={() => navigate(ERoutes.login)}
           >
             Войти
           </p>

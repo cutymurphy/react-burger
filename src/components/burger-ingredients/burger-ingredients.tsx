@@ -7,6 +7,7 @@ import { SELECT_INGREDIENT } from "../../services/actions/ingredient-details";
 import { useLocation, useNavigate } from "react-router-dom";
 import { TIngredient, TTab } from "../../utils/types";
 import { Dispatch } from "redux";
+import { ERoutes } from "../../utils/routes";
 
 const BurgerIngredients: FC = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -45,7 +46,7 @@ const BurgerIngredients: FC = () => {
 
   const onIngredientClick = (ingredient: TIngredient) => {
     dispatch({ type: SELECT_INGREDIENT, ingredient });
-    navigate(`/ingredients/${ingredient._id}`, {
+    navigate(`${ERoutes.ingredients}/${ingredient._id}`, {
       state: { background: location },
     });
   };

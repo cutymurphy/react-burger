@@ -4,11 +4,12 @@ import { useDispatch } from "react-redux";
 import { logOut } from "../../services/actions/user";
 import { FC } from "react";
 import { Dispatch } from "redux";
+import { ERoutes } from "../../utils/routes";
 
 const ProfileWrapper: FC = () => {
   const navigate = useNavigate();
   const dispatch: Dispatch<any> = useDispatch();
-  const isProfile = useMatch("/profile");
+  const isProfile = useMatch(ERoutes.profile);
 
   const handleLogOut = () => {
     dispatch(logOut(navigate));
@@ -19,7 +20,7 @@ const ProfileWrapper: FC = () => {
       <div className={styles.profile__sections}>
         <nav className={styles.profile__menu}>
           <NavLink
-            to="/profile"
+            to={ERoutes.profile}
             end
             className={({ isActive }) =>
               `text text_type_main-medium ${styles.profile__menu_item} ${
@@ -30,7 +31,7 @@ const ProfileWrapper: FC = () => {
             Профиль
           </NavLink>
           <NavLink
-            to="/profile/orders"
+            to={`${ERoutes.profile}/${ERoutes.orders}`}
             className={({ isActive }) =>
               `text text_type_main-medium ${styles.profile__menu_item} ${
                 isActive && styles.profile__menu_item_active

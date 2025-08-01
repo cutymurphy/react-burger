@@ -9,6 +9,7 @@ import { validateField } from "../../utils/validation";
 import { handleForgotPassword } from "../../services/actions/user";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { ERoutes } from "../../utils/routes";
 
 const ForgotPassword: FC = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const ForgotPassword: FC = () => {
   };
 
   if (refreshToken) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={ERoutes.main} replace />;
   }
 
   return (
@@ -67,7 +68,7 @@ const ForgotPassword: FC = () => {
           </p>
           <p
             className={`text text_type_main-default ${styles.forgot_password__link}`}
-            onClick={() => navigate("/login")}
+            onClick={() => navigate(ERoutes.login)}
           >
             Войти
           </p>

@@ -1,6 +1,7 @@
 import toast from "react-hot-toast";
 import { request } from "../../utils/request";
 import { requestWithRefresh } from "../../utils/requestWithRefresh";
+import { ERoutes } from "../../utils/routes";
 
 export const SIGN_UP = "SIGN_UP";
 export const LOG_IN = "LOG_IN";
@@ -29,7 +30,7 @@ export function signUp(email, password, name, navigate) {
           accessToken,
         });
 
-        navigate("/", { replace: true });
+        navigate(ERoutes.main, { replace: true });
         toast.success("Вы успешно зарегистрировались");
       })
       .catch(() => {
@@ -59,7 +60,7 @@ export function logIn(email, password, navigate, locationState) {
         const from =
           locationState && locationState.fromPath
             ? locationState.fromPath
-            : "/";
+            : ERoutes.main;
         navigate(from, { replace: true });
         toast.success("Вы успешно вошли в аккаунт");
       })
@@ -81,7 +82,7 @@ export function logOut(navigate) {
     })
       .then(() => {
         localStorage.removeItem("refreshToken");
-        navigate("/login", { replace: true });
+        navigate(ERoutes.login, { replace: true });
         dispatch({ type: LOG_OUT });
         toast.success("Вы успешно вышли из аккаунта");
       })
@@ -145,7 +146,7 @@ export function handleForgotPassword(email, navigate) {
     })
       .then(() => {
         dispatch({ type: SET_CAN_RESET_PASSWORD });
-        navigate("/reset-password");
+        navigate(ERoutes.resetPassword);
         toast.success("Письмо с кодом отправлено на почту");
       })
       .catch(() => {
@@ -161,7 +162,7 @@ export const handleResetPassword = async (password, token, navigate) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ password, token }),
     });
-    navigate("/login", { replace: true });
+    navigate(ERoutes.login, { replace: true });
     toast.success(
       "Пароль успешно восстановлен. Войдите в приложение под новыми данными."
     );
