@@ -1,12 +1,19 @@
-import { orderData } from "../../utils/order";
+import { orderData, TOrderData } from "../../utils/order";
+import { TOrderActions } from "../actions/order";
 import {
   CLOSE_ORDER,
   POST_ORDER_ERROR,
   POST_ORDER_REQUEST,
   POST_ORDER_SUCCESS,
-} from "../actions/order";
+} from "../constants";
 
-const initialOrder = {
+type TOrderState = {
+  order: TOrderData & { number: null | number };
+  orderFailed: boolean;
+  orderRequest: boolean;
+};
+
+const initialOrder: TOrderState = {
   order: {
     ...orderData,
     number: null,
@@ -15,7 +22,10 @@ const initialOrder = {
   orderRequest: false,
 };
 
-export const orderReducer = (state = initialOrder, action) => {
+export const orderReducer = (
+  state = initialOrder,
+  action: TOrderActions
+): TOrderState => {
   switch (action.type) {
     case POST_ORDER_REQUEST: {
       return {

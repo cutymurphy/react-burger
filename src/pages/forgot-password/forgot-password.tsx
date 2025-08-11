@@ -7,13 +7,12 @@ import { FC, FormEvent, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { validateField } from "../../utils/validation";
 import { handleForgotPassword } from "../../services/actions/user";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import { ERoutes } from "../../utils/routes";
+import { useDispatch } from "../../utils/hooks";
 
 const ForgotPassword: FC = () => {
   const navigate = useNavigate();
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch = useDispatch();
   const refreshToken = localStorage.getItem("refreshToken");
 
   const [email, setEmail] = useState<string>("");

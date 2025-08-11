@@ -6,15 +6,14 @@ import styles from "./register.module.css";
 import { FC, FormEvent, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { signUp } from "../../services/actions/user";
-import { useDispatch } from "react-redux";
 import { validateField } from "../../utils/validation";
 import { initialInfo, TRegister } from "./utils";
-import { Dispatch } from "redux";
 import { ERoutes } from "../../utils/routes";
+import { useDispatch } from "../../utils/hooks";
 
 const Register: FC = () => {
   const navigate = useNavigate();
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch = useDispatch();
   const refreshToken = localStorage.getItem("refreshToken");
 
   const [data, setData] = useState<TRegister>({ ...initialInfo });

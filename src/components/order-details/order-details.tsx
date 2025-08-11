@@ -1,11 +1,11 @@
 import styles from "./order-details.module.css";
 import orderCheckImage from "../../images/order-check.png";
-import { useSelector } from "react-redux";
 import { FC } from "react";
 import { IOrderDetails } from "./types";
+import { useSelector } from "../../utils/hooks";
 
 const OrderDetails: FC<IOrderDetails> = ({ onTickClick }) => {
-  const { order } = useSelector((store: any) => store.order);
+  const { order } = useSelector((store) => store.order);
 
   return (
     <section className={styles.details}>

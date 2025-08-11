@@ -1,31 +1,30 @@
 import { useParams } from "react-router-dom";
 import IngredientDetails from "../../components/ingredient-details";
 import styles from "./ingredient.module.css";
-import { useDispatch, useSelector } from "react-redux";
 import { FC, useEffect } from "react";
-import {
-  SELECT_INGREDIENT,
-  UNSELECT_INGREDIENT,
-} from "../../services/actions/ingredient-details";
-import { getIngredients } from "../../services/actions/ingredients";
 import { RingLoader } from "react-spinners";
 import { TIngredient } from "../../utils/types";
-import { Dispatch } from "redux";
+import { useDispatch, useSelector } from "../../utils/hooks";
+import {
+  selectIngredient,
+  unselectIngredient,
+} from "../../services/actions/ingredient-details";
+import { getIngredients } from "../../services/actions/ingredients";
 
 const Ingredient: FC = () => {
   const { id } = useParams();
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch = useDispatch();
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
-    (store: any) => store.ingredients
+    (store) => store.ingredients
   );
   const selectedIngredient = useSelector(
-    (store: any) => store.ingredient.selectedIngredient
+    (store) => store.ingredient.selectedIngredient
   );
 
   useEffect(() => {
     const ingredient = ingredients.find((item: TIngredient) => item._id === id);
     if (ingredient) {
-      dispatch({ type: SELECT_INGREDIENT, ingredient });
+      dispatch(selectIngredient(ingredient));
     }
   }, [dispatch, id, ingredients]);
 
@@ -37,7 +36,7 @@ const Ingredient: FC = () => {
 
   useEffect(() => {
     return () => {
-      dispatch({ type: UNSELECT_INGREDIENT });
+      dispatch(unselectIngredient());
     };
   }, [dispatch]);
 

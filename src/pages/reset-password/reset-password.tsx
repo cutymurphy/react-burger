@@ -7,15 +7,13 @@ import { FC, FormEvent, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { validateField } from "../../utils/validation";
 import { handleResetPassword } from "../../services/actions/user";
-import { useSelector } from "react-redux";
 import { initialInfo, TResetPassword } from "./utils";
 import { ERoutes } from "../../utils/routes";
+import { useSelector } from "../../utils/hooks";
 
 const ResetPassword: FC = () => {
   const navigate = useNavigate();
-  const canResetPassword = useSelector(
-    (store: any) => store.user.canResetPassword
-  );
+  const canResetPassword = useSelector((store) => store.user.canResetPassword);
   const refreshToken = localStorage.getItem("refreshToken");
 
   const [data, setData] = useState<TResetPassword>({ ...initialInfo });

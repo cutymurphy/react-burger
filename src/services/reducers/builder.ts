@@ -1,17 +1,27 @@
+import { TIngredient } from "../../utils/types";
+import { TBuilderActions } from "../actions/builder";
 import {
   ADD_INGREDIENT,
   CHANGE_BUN,
   CLEAR_CONSTRUCTOR,
   DELETE_INGREDIENT,
   MOVE_INGREDIENT,
-} from "../actions/builder";
+} from "../constants";
 
-const initialBuilder = {
+type TBuilderState = {
+  selectedIngredients: ReadonlyArray<TIngredient>;
+  mainBun: null | TIngredient;
+};
+
+const initialBuilder: TBuilderState = {
   selectedIngredients: [],
   mainBun: null,
 };
 
-export const builderReducer = (state = initialBuilder, action) => {
+export const builderReducer = (
+  state = initialBuilder,
+  action: TBuilderActions
+): TBuilderState => {
   switch (action.type) {
     case ADD_INGREDIENT: {
       return {

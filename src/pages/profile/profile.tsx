@@ -4,7 +4,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./profile.module.css";
 import { FC, FormEvent, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { editUser } from "../../services/actions/user";
 import {
   initialEdit,
@@ -15,14 +14,14 @@ import {
   TSaveProfile,
 } from "./utils";
 import { validateField } from "../../utils/validation";
-import { Dispatch } from "redux";
+import { useDispatch, useSelector } from "../../utils/hooks";
 
 const Profile: FC = () => {
-  const dispatch: Dispatch<any> = useDispatch();
-  const { user: storeUser, accessToken } = useSelector(
-    (store: any) => store.user
-  );
-  const initialUser: TProfile = { ...storeUser, password: "" };
+  const dispatch = useDispatch();
+  const { user: storeUser, accessToken } = useSelector((store) => store.user);
+  const initialUser: TProfile = storeUser
+    ? { ...storeUser, password: "" }
+    : { ...initialInfo };
 
   const [profile, setProfile] = useState<TProfile>({ ...initialInfo });
   const [profileErrors, setProfileErrors] = useState<TProfileErrors>({});

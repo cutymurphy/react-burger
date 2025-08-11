@@ -1,19 +1,30 @@
+import { TProfile } from "../../pages/profile/utils";
+import { TUserActions } from "../actions/user";
 import {
   LOG_IN,
   LOG_OUT,
+  SET_CAN_RESET_PASSWORD,
+  SET_TOKEN,
   SET_USER,
   SIGN_UP,
-  SET_TOKEN,
-  SET_CAN_RESET_PASSWORD,
-} from "../actions/user";
+} from "../constants";
 
-const initialUser = {
+type TUserState = {
+  user: TProfile | null;
+  accessToken: string;
+  canResetPassword: boolean;
+};
+
+const initialUser: TUserState = {
   user: null,
   accessToken: "",
   canResetPassword: false,
 };
 
-export const userReducer = (state = initialUser, action) => {
+export const userReducer = (
+  state = initialUser,
+  action: TUserActions
+): TUserState => {
   switch (action.type) {
     case LOG_IN:
     case SIGN_UP: {

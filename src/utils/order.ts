@@ -1,4 +1,4 @@
-type TOrderData = {
+export type TOrderData = {
   message: string;
   subMessage: string;
 };

@@ -1,19 +1,19 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../services/actions/user";
 import { RingLoader } from "react-spinners";
 import styles from "./protected-route.module.css";
 import { IProtectedRouteElement } from "./types";
 import { ERoutes } from "../../utils/routes";
+import { useDispatch, useSelector } from "../../utils/hooks";
 
 const ProtectedRouteElement: FC<IProtectedRouteElement> = ({
   element,
   isProtectedFromUnAuthUser = false,
 }) => {
-  const dispatch: any = useDispatch();
+  const dispatch = useDispatch();
   const { pathname } = useLocation();
-  const { user, accessToken } = useSelector((store: any) => store.user);
+  const { user, accessToken } = useSelector((store) => store.user);
 
   const [isUserLoaded, setUserLoaded] = useState<boolean>(false);
 
