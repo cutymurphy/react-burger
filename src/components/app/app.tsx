@@ -17,6 +17,7 @@ import IngredientModal from "../ingredient-modal";
 import { Toaster } from "react-hot-toast";
 import { FC } from "react";
 import { ERoutes } from "../../utils/routes";
+import Feed from "../../pages/feed";
 
 const App: FC = () => {
   const location = useLocation();
@@ -30,6 +31,7 @@ const App: FC = () => {
       <div className={styles.page}>
         <Routes location={background || location}>
           <Route path={ERoutes.main} element={<Home />} />
+          <Route path={ERoutes.feed} element={<Feed />} />
           <Route path={ERoutes.login} element={<Login />} />
           <Route path={ERoutes.register} element={<Register />} />
           <Route path={ERoutes.forgotPassword} element={<ForgotPassword />} />

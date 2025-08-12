@@ -1,5 +1,5 @@
 import { TProfile } from "../../pages/profile/utils";
-import { TIngredient } from "../../utils/types";
+import { TIngredient, TOrder } from "../../utils/types";
 
 export type TGetIngredientsData = {
   success: boolean;
@@ -27,3 +27,10 @@ export type TGetUserData = {
 };
 
 export type TEditUserData = TGetUserData;
+
+export type TGetAllOrdersData = {
+  success: boolean;
+  orders: TOrder[];
+  total: number;
+  totalToday: number;
+};

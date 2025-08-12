@@ -15,3 +15,13 @@ export type TIngredient = {
 };
 
 export type TTab = "bun" | "sauce" | "main";
+
+export type TOrder = {
+  ingredients: string[];
+  _id: string;
+  status: string;
+  number: number;
+  name: string;
+  createdAt: string;
+  updatedAt?: string | null;
+};

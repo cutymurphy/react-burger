@@ -80,7 +80,7 @@ const BurgerIngredients: FC = () => {
 
   return (
     <section className={`${styles.ingredients} mt-10 mb-10 mr-10`}>
-      <p className="text text_type_main-large mb-5">Соберите бургер</p>
+      <p className="text text_type_main-large mb-5 ml-2">Соберите бургер</p>
       <nav style={{ display: "flex" }} className="mb-10">
         <Tab value="bun" active={current === "bun"} onClick={handleTabClick}>
           Булки

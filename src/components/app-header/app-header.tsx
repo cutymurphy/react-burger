@@ -39,13 +39,24 @@ const AppHeader: FC = () => {
             )}
           </NavLink>
           <NavLink
-            className={`${styles.header__btn} ${styles.disabled} pt-4 pr-5 pb-4 pl-5`}
-            to={ERoutes.main}
+            className={`${styles.header__btn} pt-4 pr-5 pb-4 pl-5`}
+            to={ERoutes.feed}
           >
-            <ListIcon type="secondary" className="mr-2" />
-            <p className="text text_type_main-default text_color_inactive">
-              Лента заказов
-            </p>
+            {({ isActive }) => (
+              <>
+                <ListIcon
+                  type={isActive ? "primary" : "secondary"}
+                  className="mr-2"
+                />
+                <p
+                  className={`text text_type_main-default ${
+                    isActive && styles.header__btn_active
+                  }`}
+                >
+                  Лента заказов
+                </p>
+              </>
+            )}
           </NavLink>
         </div>
         <div

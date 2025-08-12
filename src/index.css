@@ -7,6 +7,9 @@
   --modal-border: #4c4cff33;
   --interface-accent: #4c4cff;
   --white: #ffffff;
+  --ingredient-gradient-left: #801ab2;
+  --ingredient-gradient-right: #4c4cff;
+  --success: #00cccc;
 
   --constructor-element-height: 80px;
   --constructor-elements-gap: 10px;
