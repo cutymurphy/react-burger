@@ -4,7 +4,7 @@ import {
   ConstructorElement,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import OrderDetails from "../order-details";
+import OrderInfo from "../order-info";
 import Modal from "../modal";
 import { closeOrder, postOrder } from "../../services/actions/order";
 import { FC, useMemo, useRef } from "react";
@@ -198,7 +198,7 @@ const BurgerConstructor: FC = () => {
       </footer>
       {order.number !== null && !orderFailed && (
         <Modal onClose={onOrderModalClose}>
-          <OrderDetails onTickClick={onOrderModalClose} />
+          <OrderInfo onTickClick={onOrderModalClose} />
         </Modal>
       )}
     </section>
