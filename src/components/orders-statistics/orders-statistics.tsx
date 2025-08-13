@@ -1,14 +1,18 @@
 import { FC } from "react";
 import styles from "./orders-statistics.module.css";
 import { useSelector } from "../../utils/hooks";
+import { EStatus } from "../../utils/types";
 
 const OrdersStatistics: FC = () => {
   const { orders, total, totalToday } = useSelector((store) => store.allOrders);
   const doneOrders = orders
-    .filter((order) => order.status === "done")
+    .filter((order) => order.status === EStatus.DONE)
     .slice(0, 20);
   const inWorkOrders = orders
-    .filter((order) => order.status !== "done")
+    .filter(
+      (order) =>
+        order.status === EStatus.PENDING || order.status === EStatus.CREATED
+    )
     .slice(0, 20);
 
   return (
@@ -20,7 +24,7 @@ const OrdersStatistics: FC = () => {
             {doneOrders.map((order) => (
               <p
                 key={order._id}
-                className={`text text_type_digits-default ${styles.number__success}`}
+                className="text text_type_digits-default text_color_success"
               >
                 {order.number}
               </p>
