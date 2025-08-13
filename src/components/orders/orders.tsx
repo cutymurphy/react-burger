@@ -8,12 +8,25 @@ import {
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { RingLoader } from "react-spinners";
+import { useLocation, useMatch, useNavigate } from "react-router-dom";
+import { ERoutes } from "../../utils/routes";
 
 const Orders: FC<IOrders> = ({ orders }) => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isFeedPage = useMatch(ERoutes.feed);
+
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
     (store) => store.ingredients
   );
+  const { selectedOrder } = useSelector((store) => store.orderDetails);
+
+  const onOrderClick = (id: string) => {
+    navigate(`${isFeedPage ? ERoutes.feed : ERoutes.profile}/${id}`, {
+      state: { background: location },
+    });
+  };
 
   useEffect(() => {
     if (!ingredients.length) {
@@ -48,7 +61,13 @@ const Orders: FC<IOrders> = ({ orders }) => {
           );
 
           return (
-            <div key={_id} className={`${styles.card} p-6`}>
+            <div
+              key={_id}
+              className={`${styles.card} ${
+                selectedOrder?._id === _id && styles.card_active
+              } p-6`}
+              onClick={() => onOrderClick(_id)}
+            >
               <div className={`${styles.card__header} mb-6`}>
                 <p className="text text_type_digits-default">#{number}</p>
                 <p className="text text_type_main-default text_color_inactive">

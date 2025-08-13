@@ -18,6 +18,7 @@ import { Toaster } from "react-hot-toast";
 import { FC } from "react";
 import { ERoutes } from "../../utils/routes";
 import Feed from "../../pages/feed";
+import OrderModal from "../order-modal";
 
 const App: FC = () => {
   const location = useLocation();
@@ -32,6 +33,7 @@ const App: FC = () => {
         <Routes location={background || location}>
           <Route path={ERoutes.main} element={<Home />} />
           <Route path={ERoutes.feed} element={<Feed />} />
+          <Route path={`${ERoutes.feed}/:id`} element={<Order />} />
           <Route path={ERoutes.login} element={<Login />} />
           <Route path={ERoutes.register} element={<Register />} />
           <Route path={ERoutes.forgotPassword} element={<ForgotPassword />} />
@@ -47,7 +49,7 @@ const App: FC = () => {
           >
             <Route index element={<Profile />} />
             <Route path={ERoutes.orders} element={<OrdersHistory />} />
-            <Route path={`${ERoutes.orders}/:number`} element={<Order />} />
+            <Route path={`${ERoutes.orders}/:id`} element={<Order />} />
           </Route>
           <Route path={`${ERoutes.ingredients}/:id`} element={<Ingredient />} />
           <Route path={ERoutes.others} element={<NotFound />} />
@@ -58,6 +60,7 @@ const App: FC = () => {
               path={`${ERoutes.ingredients}/:id`}
               element={<IngredientModal />}
             />
+            <Route path={`${ERoutes.feed}/:id`} element={<OrderModal />} />
           </Routes>
         )}
       </div>

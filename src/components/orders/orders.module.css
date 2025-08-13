@@ -9,6 +9,14 @@
   flex-direction: column;
   border-radius: 40px;
   background-color: var(--modal-bg);
+  border: 1px solid var(--modal-bg);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.card:hover,
+.card_active {
+  border: 1px solid rgba(51, 51, 255, 0.5);
 }
 
 .card__header {

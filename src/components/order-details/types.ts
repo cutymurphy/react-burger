@@ -1,3 +1,5 @@
+import { CSSProperties } from "react";
+
 export interface IOrderDetails {
-  onTickClick: () => void;
+  orderNumberStyle?: CSSProperties;
 }
