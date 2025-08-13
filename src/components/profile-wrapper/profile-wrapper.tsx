@@ -53,7 +53,9 @@ const ProfileWrapper: FC = () => {
               : "В этом разделе вы можете просмотреть свою историю заказов"}
           </p>
         </nav>
-        <Outlet />
+        <div className={styles.outlet}>
+          <Outlet />
+        </div>
       </div>
     </main>
   );

@@ -28,7 +28,7 @@ export type TGetUserData = {
 
 export type TEditUserData = TGetUserData;
 
-export type TGetAllOrdersData = {
+export type TGetOrdersData = {
   success: boolean;
   orders: TOrder[];
   total: number;

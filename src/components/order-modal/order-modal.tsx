@@ -10,11 +10,13 @@ import {
   unselectOrder,
 } from "../../services/actions/order-details";
 
-const OrderModal: FC = () => {
+const OrderModal: FC<{ isFeedModal?: boolean }> = ({ isFeedModal = true }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { orders, ordersRequest } = useSelector((store) => store.allOrders);
+  const { orders, ordersRequest } = useSelector((store) =>
+    isFeedModal ? store.allOrders : store.orders
+  );
   const { selectedOrder } = useSelector((store) => store.orderDetails);
 
   const handleCloseModal = () => {

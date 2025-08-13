@@ -6,6 +6,7 @@ import { orderReducer } from "./order";
 import { userReducer } from "./user";
 import { allOrdersReducer } from "./allOrders";
 import { orderDetailsReducer } from "./order-details";
+import { ordersReducer } from "./orders";
 
 export const rootReducer = combineReducers({
   builder: builderReducer,
@@ -15,4 +16,5 @@ export const rootReducer = combineReducers({
   user: userReducer,
   allOrders: allOrdersReducer,
   orderDetails: orderDetailsReducer,
+  orders: ordersReducer,
 });

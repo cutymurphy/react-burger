@@ -12,13 +12,14 @@ import Ingredient from "../../pages/ingredient";
 import ProtectedRouteElement from "../protected-route";
 import OrdersHistory from "../../pages/orders-history";
 import ProfileWrapper from "../profile-wrapper";
-import Order from "../../pages/order";
 import IngredientModal from "../ingredient-modal";
 import { Toaster } from "react-hot-toast";
 import { FC } from "react";
 import { ERoutes } from "../../utils/routes";
 import Feed from "../../pages/feed";
 import OrderModal from "../order-modal";
+import FeedOrder from "../../pages/feed-order";
+import ProfileOrder from "../../pages/profile-order";
 
 const App: FC = () => {
   const location = useLocation();
@@ -33,24 +34,22 @@ const App: FC = () => {
         <Routes location={background || location}>
           <Route path={ERoutes.main} element={<Home />} />
           <Route path={ERoutes.feed} element={<Feed />} />
-          <Route path={`${ERoutes.feed}/:id`} element={<Order />} />
+          <Route path={`${ERoutes.feed}/:id`} element={<FeedOrder />} />
           <Route path={ERoutes.login} element={<Login />} />
           <Route path={ERoutes.register} element={<Register />} />
           <Route path={ERoutes.forgotPassword} element={<ForgotPassword />} />
           <Route path={ERoutes.resetPassword} element={<ResetPassword />} />
           <Route
             path={ERoutes.profile}
-            element={
-              <ProtectedRouteElement
-                element={<ProfileWrapper />}
-                isProtectedFromUnAuthUser
-              />
-            }
+            element={<ProtectedRouteElement element={<ProfileWrapper />} />}
           >
             <Route index element={<Profile />} />
             <Route path={ERoutes.orders} element={<OrdersHistory />} />
-            <Route path={`${ERoutes.orders}/:id`} element={<Order />} />
           </Route>
+          <Route
+            path={`${ERoutes.profile}/${ERoutes.orders}/:id`}
+            element={<ProtectedRouteElement element={<ProfileOrder />} />}
+          />
           <Route path={`${ERoutes.ingredients}/:id`} element={<Ingredient />} />
           <Route path={ERoutes.others} element={<NotFound />} />
         </Routes>
@@ -61,6 +60,14 @@ const App: FC = () => {
               element={<IngredientModal />}
             />
             <Route path={`${ERoutes.feed}/:id`} element={<OrderModal />} />
+            <Route
+              path={`${ERoutes.profile}/${ERoutes.orders}/:id`}
+              element={
+                <ProtectedRouteElement
+                  element={<OrderModal isFeedModal={false} />}
+                />
+              }
+            />
           </Routes>
         )}
       </div>

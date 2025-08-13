@@ -29,6 +29,7 @@ const Profile: FC = () => {
     ...initialEdit,
   });
   const [editOpen, setEditOpen] = useState<TProfileEdit>({ ...initialEdit });
+  const isEditMode = Object.values(editedFields).some((value) => !!value);
 
   const onChange = <K extends keyof TProfile>(field: K, value: TProfile[K]) => {
     setProfile({ ...profile, [field]: value });
@@ -90,7 +91,11 @@ const Profile: FC = () => {
   }, [storeUser]);
 
   return (
-    <form className={styles.profile__form} onSubmit={handleSaveProfile}>
+    <form
+      className={styles.profile__form}
+      style={{ marginTop: isEditMode ? "-24px" : "-80px" }}
+      onSubmit={handleSaveProfile}
+    >
       <Input
         placeholder={"Имя"}
         type={"text"}
@@ -133,7 +138,7 @@ const Profile: FC = () => {
         onPointerEnterCapture={() => {}}
         onPointerLeaveCapture={() => {}}
       />
-      {Object.values(editedFields).some((value) => !!value) && (
+      {isEditMode && (
         <div className={styles.profile__btns}>
           <Button
             htmlType="button"

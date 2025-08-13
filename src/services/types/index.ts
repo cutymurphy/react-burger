@@ -7,6 +7,7 @@ import { TOrderActions } from "../actions/order";
 import { TUserActions } from "../actions/user";
 import { TAllOrdersActions } from "../actions/allOrders";
 import { TOrderDetailsActions } from "../actions/order-details";
+import { TOrdersActions } from "../actions/orders";
 
 export type RootState = ReturnType<typeof store.getState>;
 
@@ -17,7 +18,8 @@ type TApplicationActions =
   | TOrderActions
   | TUserActions
   | TAllOrdersActions
-  | TOrderDetailsActions;
+  | TOrderDetailsActions
+  | TOrdersActions;
 
 export type AppDispatch = ThunkDispatch<
   RootState,

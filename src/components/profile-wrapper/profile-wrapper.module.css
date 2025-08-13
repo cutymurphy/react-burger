@@ -7,11 +7,25 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  height: -webkit-fill-available;
+  height: -moz-available;
 }
 
 .profile__sections {
   display: flex;
   gap: 60px;
+  height: 100%;
+  align-items: center;
+}
+
+.outlet {
+  display: flex;
+  justify-content: center;
+  height: -webkit-fill-available;
+  height: -moz-available;
+  align-items: center;
+  margin: 20px 0;
+  width: 800px;
 }
 
 .profile__menu {

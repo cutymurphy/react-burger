@@ -6,7 +6,7 @@ import {
   GET_ALL_ORDERS_REQUEST,
   GET_ALL_ORDERS_SUCCESS,
 } from "../constants";
-import { TGetAllOrdersData } from "../types/data";
+import { TGetOrdersData } from "../types/data";
 import { TOrder } from "../../utils/types";
 
 export interface IGetAllOrdersRequestAction {
@@ -57,7 +57,7 @@ export const getAllOrdersSuccess = (
 export const getAllOrders = (): AppThunk => {
   return function (dispatch: AppDispatch) {
     dispatch(getAllOrdersRequest());
-    request<TGetAllOrdersData>("/orders/all")
+    request<TGetOrdersData>("/orders/all")
       .then((data) => {
         setTimeout(() => {
           dispatch(

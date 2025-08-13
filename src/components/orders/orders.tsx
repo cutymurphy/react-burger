@@ -10,6 +10,7 @@ import {
 import { RingLoader } from "react-spinners";
 import { useLocation, useMatch, useNavigate } from "react-router-dom";
 import { ERoutes } from "../../utils/routes";
+import OrderStatus from "../order-status";
 
 const Orders: FC<IOrders> = ({ orders }) => {
   const dispatch = useDispatch();
@@ -23,9 +24,14 @@ const Orders: FC<IOrders> = ({ orders }) => {
   const { selectedOrder } = useSelector((store) => store.orderDetails);
 
   const onOrderClick = (id: string) => {
-    navigate(`${isFeedPage ? ERoutes.feed : ERoutes.profile}/${id}`, {
-      state: { background: location },
-    });
+    navigate(
+      `${
+        isFeedPage ? ERoutes.feed : `${ERoutes.profile}/${ERoutes.orders}`
+      }/${id}`,
+      {
+        state: { background: location },
+      }
+    );
   };
 
   useEffect(() => {
@@ -74,7 +80,14 @@ const Orders: FC<IOrders> = ({ orders }) => {
                   <FormattedDate date={new Date(updatedAt || createdAt)} />
                 </p>
               </div>
-              <p className="text text_type_main-medium mb-6">{name}</p>
+              <div className="mb-6">
+                <p className="text text_type_main-medium">{name}</p>
+                {!isFeedPage && (
+                  <div className="mt-2">
+                    <OrderStatus status={status} />
+                  </div>
+                )}
+              </div>
               {ingredientsRequest && (
                 <div className={styles.card__info}>
                   <RingLoader color="var(--dark-grey)" loading />

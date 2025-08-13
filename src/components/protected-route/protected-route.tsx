@@ -7,10 +7,7 @@ import { IProtectedRouteElement } from "./types";
 import { ERoutes } from "../../utils/routes";
 import { useDispatch, useSelector } from "../../utils/hooks";
 
-const ProtectedRouteElement: FC<IProtectedRouteElement> = ({
-  element,
-  isProtectedFromUnAuthUser = false,
-}) => {
+const ProtectedRouteElement: FC<IProtectedRouteElement> = ({ element }) => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const { user, accessToken } = useSelector((store) => store.user);
@@ -37,7 +34,7 @@ const ProtectedRouteElement: FC<IProtectedRouteElement> = ({
     );
   }
 
-  if (isProtectedFromUnAuthUser && !user) {
+  if (!user) {
     return (
       <Navigate to={ERoutes.login} state={{ fromPath: pathname }} replace />
     );
