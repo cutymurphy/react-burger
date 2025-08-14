@@ -1,13 +1,9 @@
-import toast from "react-hot-toast";
-import { AppDispatch, AppThunk } from "../types";
 import { TOrder } from "../../utils/types";
 import {
   GET_ORDERS_ERROR,
   GET_ORDERS_REQUEST,
   GET_ORDERS_SUCCESS,
 } from "../constants";
-import { TGetOrdersData } from "../types/data";
-import { requestWithRefresh } from "../../utils/requestWithRefresh";
 
 export interface IGetOrdersRequestAction {
   readonly type: typeof GET_ORDERS_REQUEST;
@@ -45,31 +41,5 @@ export const getOrdersSuccess = (
   return {
     type: GET_ORDERS_SUCCESS,
     orders,
-  };
-};
-
-export const getOrders = (accessToken: string): AppThunk => {
-  return function (dispatch: AppDispatch) {
-    dispatch(getOrdersRequest());
-    requestWithRefresh<TGetOrdersData>(
-      "/orders",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + accessToken,
-        },
-      },
-      dispatch
-    )
-      .then((data) => {
-        setTimeout(() => {
-          dispatch(getOrdersSuccess(data.orders.reverse()));
-        }, 1000);
-      })
-      .catch(() => {
-        dispatch(getOrdersError());
-        toast.error("Произошла ошибка при получении заказов");
-      });
   };
 };

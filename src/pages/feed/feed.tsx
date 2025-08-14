@@ -2,9 +2,13 @@ import { FC, useEffect } from "react";
 import { RingLoader } from "react-spinners";
 import styles from "./feed.module.css";
 import { useDispatch, useSelector } from "../../utils/hooks";
-import { getAllOrders } from "../../services/actions/allOrders";
 import Orders from "../../components/orders";
 import OrdersStatistics from "../../components/orders-statistics";
+import { WS_BASE_URL } from "../../utils/api";
+import {
+  handleWSConnectionClosed,
+  handleWSConnectionStart,
+} from "../../services/actions/webSocket";
 
 const Feed: FC = () => {
   const dispatch = useDispatch();
@@ -13,9 +17,14 @@ const Feed: FC = () => {
   );
 
   useEffect(() => {
+    const url = `${WS_BASE_URL}/orders/all`;
     if (!orders.length) {
-      dispatch(getAllOrders());
+      dispatch(handleWSConnectionStart(url));
     }
+
+    return () => {
+      dispatch(handleWSConnectionClosed(url));
+    };
   }, [dispatch, orders.length]);
 
   return (

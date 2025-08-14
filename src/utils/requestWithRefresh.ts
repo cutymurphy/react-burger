@@ -8,7 +8,7 @@ type TTokenResponse = {
   refreshToken: string;
 };
 
-const getAccessToken = (): Promise<TTokenResponse> => {
+export const getAccessToken = (): Promise<TTokenResponse> => {
   const token = localStorage.getItem("refreshToken");
   return request<TTokenResponse>("/auth/token", {
     method: "POST",

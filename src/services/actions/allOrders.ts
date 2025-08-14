@@ -1,12 +1,8 @@
-import toast from "react-hot-toast";
-import { request } from "../../utils/request";
-import { AppDispatch, AppThunk } from "../types";
 import {
   GET_ALL_ORDERS_ERROR,
   GET_ALL_ORDERS_REQUEST,
   GET_ALL_ORDERS_SUCCESS,
 } from "../constants";
-import { TGetOrdersData } from "../types/data";
 import { TOrder } from "../../utils/types";
 
 export interface IGetAllOrdersRequestAction {
@@ -51,23 +47,5 @@ export const getAllOrdersSuccess = (
     allOrders,
     total,
     totalToday,
-  };
-};
-
-export const getAllOrders = (): AppThunk => {
-  return function (dispatch: AppDispatch) {
-    dispatch(getAllOrdersRequest());
-    request<TGetOrdersData>("/orders/all")
-      .then((data) => {
-        setTimeout(() => {
-          dispatch(
-            getAllOrdersSuccess(data.orders, data.total, data.totalToday)
-          );
-        }, 1000);
-      })
-      .catch(() => {
-        dispatch(getAllOrdersError());
-        toast.error("Произошла ошибка при получении заказов");
-      });
   };
 };

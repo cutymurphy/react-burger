@@ -8,10 +8,11 @@ import { TUserActions } from "../actions/user";
 import { TAllOrdersActions } from "../actions/allOrders";
 import { TOrderDetailsActions } from "../actions/order-details";
 import { TOrdersActions } from "../actions/orders";
+import { TWSActions } from "../actions/webSocket";
 
 export type RootState = ReturnType<typeof store.getState>;
 
-type TApplicationActions =
+export type TApplicationActions =
   | TBuilderActions
   | TIngredientDetailsActions
   | TIngredientsActions
@@ -19,7 +20,8 @@ type TApplicationActions =
   | TUserActions
   | TAllOrdersActions
   | TOrderDetailsActions
-  | TOrdersActions;
+  | TOrdersActions
+  | TWSActions;
 
 export type AppDispatch = ThunkDispatch<
   RootState,

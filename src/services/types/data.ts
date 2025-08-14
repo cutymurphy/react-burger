@@ -33,4 +33,10 @@ export type TGetOrdersData = {
   orders: TOrder[];
   total: number;
   totalToday: number;
+  message?: string;
+};
+
+export type TGetOrderData = {
+  success: boolean;
+  orders: TOrder[];
 };

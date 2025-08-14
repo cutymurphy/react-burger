@@ -1,9 +1,13 @@
 import { FC, useEffect } from "react";
 import styles from "./orders-history.module.css";
 import { useDispatch, useSelector } from "../../utils/hooks";
-import { getOrders } from "../../services/actions/orders";
 import { RingLoader } from "react-spinners";
 import Orders from "../../components/orders";
+import {
+  handleWSConnectionClosed,
+  handleWSConnectionStart,
+} from "../../services/actions/webSocket";
+import { WS_BASE_URL } from "../../utils/api";
 
 const OrdersHistory: FC = () => {
   const dispatch = useDispatch();
@@ -13,10 +17,15 @@ const OrdersHistory: FC = () => {
   const { accessToken } = useSelector((store) => store.user);
 
   useEffect(() => {
+    const url = `${WS_BASE_URL}/orders?token=${accessToken}`;
     if (!orders.length) {
-      dispatch(getOrders(accessToken));
+      dispatch(handleWSConnectionStart(url));
     }
-  }, [accessToken, orders.length, dispatch]);
+
+    return () => {
+      dispatch(handleWSConnectionClosed(url));
+    };
+  }, [accessToken, dispatch, orders.length]);
 
   return (
     <div className={styles.wrapper}>
