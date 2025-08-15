@@ -2,21 +2,20 @@ import { FC, RefObject, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
-import { useDispatch, useSelector } from "react-redux";
-import { SELECT_INGREDIENT } from "../../services/actions/ingredient-details";
 import { useLocation, useNavigate } from "react-router-dom";
 import { TIngredient, TTab } from "../../utils/types";
-import { Dispatch } from "redux";
 import { ERoutes } from "../../utils/routes";
+import { selectIngredient } from "../../services/actions/ingredient-details";
+import { useDispatch, useSelector } from "../../utils/hooks";
 
 const BurgerIngredients: FC = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const ingredients: TIngredient[] = useSelector(
-    (store: any) => store.ingredients.ingredients
+  const ingredients: ReadonlyArray<TIngredient> = useSelector(
+    (store) => store.ingredients.ingredients
   );
 
   const [current, setCurrent] = useState<TTab>("bun");
@@ -45,7 +44,7 @@ const BurgerIngredients: FC = () => {
   };
 
   const onIngredientClick = (ingredient: TIngredient) => {
-    dispatch({ type: SELECT_INGREDIENT, ingredient });
+    dispatch(selectIngredient(ingredient));
     navigate(`${ERoutes.ingredients}/${ingredient._id}`, {
       state: { background: location },
     });
@@ -81,7 +80,7 @@ const BurgerIngredients: FC = () => {
 
   return (
     <section className={`${styles.ingredients} mt-10 mb-10 mr-10`}>
-      <p className="text text_type_main-large mb-5">Соберите бургер</p>
+      <p className="text text_type_main-large mb-5 ml-2">Соберите бургер</p>
       <nav style={{ display: "flex" }} className="mb-10">
         <Tab value="bun" active={current === "bun"} onClick={handleTabClick}>
           Булки

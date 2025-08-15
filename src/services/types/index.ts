@@ -1,0 +1,37 @@
+import { store } from "../../store";
+import { ThunkAction, ThunkDispatch } from "redux-thunk";
+import { TBuilderActions } from "../actions/builder";
+import { TIngredientDetailsActions } from "../actions/ingredient-details";
+import { TIngredientsActions } from "../actions/ingredients";
+import { TOrderActions } from "../actions/order";
+import { TUserActions } from "../actions/user";
+import { TAllOrdersActions } from "../actions/allOrders";
+import { TOrderDetailsActions } from "../actions/order-details";
+import { TOrdersActions } from "../actions/orders";
+import { TWSActions } from "../actions/webSocket";
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export type TApplicationActions =
+  | TBuilderActions
+  | TIngredientDetailsActions
+  | TIngredientsActions
+  | TOrderActions
+  | TUserActions
+  | TAllOrdersActions
+  | TOrderDetailsActions
+  | TOrdersActions
+  | TWSActions;
+
+export type AppDispatch = ThunkDispatch<
+  RootState,
+  unknown,
+  TApplicationActions
+>;
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  TApplicationActions
+>;

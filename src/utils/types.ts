@@ -15,3 +15,20 @@ export type TIngredient = {
 };
 
 export type TTab = "bun" | "sauce" | "main";
+
+export type TOrder = {
+  ingredients: string[];
+  _id: string;
+  status: EStatus;
+  number: number;
+  name: string;
+  createdAt: string;
+  updatedAt?: string | null;
+};
+
+export enum EStatus {
+  DONE = "done",
+  CREATED = "created",
+  PENDING = "pending",
+  CANCELLED = "cancelled",
+}

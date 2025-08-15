@@ -1,14 +1,13 @@
 import { NavLink, Outlet, useMatch, useNavigate } from "react-router-dom";
 import styles from "./profile-wrapper.module.css";
-import { useDispatch } from "react-redux";
 import { logOut } from "../../services/actions/user";
 import { FC } from "react";
-import { Dispatch } from "redux";
 import { ERoutes } from "../../utils/routes";
+import { useDispatch } from "../../utils/hooks";
 
 const ProfileWrapper: FC = () => {
   const navigate = useNavigate();
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch = useDispatch();
   const isProfile = useMatch(ERoutes.profile);
 
   const handleLogOut = () => {
@@ -54,7 +53,9 @@ const ProfileWrapper: FC = () => {
               : "В этом разделе вы можете просмотреть свою историю заказов"}
           </p>
         </nav>
-        <Outlet />
+        <div className={styles.outlet}>
+          <Outlet />
+        </div>
       </div>
     </main>
   );

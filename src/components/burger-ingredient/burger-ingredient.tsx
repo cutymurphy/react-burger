@@ -4,9 +4,9 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredient.module.css";
 import { useDrag } from "react-dnd";
-import { useSelector } from "react-redux";
 import { FC, useRef } from "react";
 import { IBurgerIngredient } from "./types";
+import { useSelector } from "../../utils/hooks";
 
 const BurgerIngredient: FC<IBurgerIngredient> = ({ ingredient, onClick }) => {
   const [, ingredientRef] = useDrag({
@@ -15,7 +15,7 @@ const BurgerIngredient: FC<IBurgerIngredient> = ({ ingredient, onClick }) => {
   });
   const imgRef = useRef<HTMLImageElement>(null);
 
-  const mainBun = useSelector((store: any) => store.builder.mainBun);
+  const mainBun = useSelector((store) => store.builder.mainBun);
   const count = mainBun && ingredient._id === mainBun._id ? 2 : ingredient.__v;
 
   ingredientRef(imgRef);

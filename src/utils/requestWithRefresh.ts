@@ -1,6 +1,6 @@
 import { request } from "./request";
-import { SET_TOKEN } from "../services/actions/user";
-import { Dispatch } from "redux";
+import { setToken } from "../services/actions/user";
+import { AppDispatch } from "../services/types";
 
 type TTokenResponse = {
   success: boolean;
@@ -8,7 +8,7 @@ type TTokenResponse = {
   refreshToken: string;
 };
 
-const getAccessToken = (): Promise<TTokenResponse> => {
+export const getAccessToken = (): Promise<TTokenResponse> => {
   const token = localStorage.getItem("refreshToken");
   return request<TTokenResponse>("/auth/token", {
     method: "POST",
@@ -20,7 +20,7 @@ const getAccessToken = (): Promise<TTokenResponse> => {
 export const requestWithRefresh = async <T>(
   endpoint: string,
   options: RequestInit,
-  dispatch: Dispatch
+  dispatch: AppDispatch
 ) => {
   try {
     return await request<T>(endpoint, options);
@@ -35,7 +35,7 @@ export const requestWithRefresh = async <T>(
         const newAccessToken = refreshData.accessToken.split("Bearer ")[1];
         const newRefreshToken = refreshData.refreshToken;
         localStorage.setItem("refreshToken", newRefreshToken);
-        dispatch({ type: SET_TOKEN, accessToken: newAccessToken });
+        dispatch(setToken(newAccessToken));
 
         options.headers = {
           ...options.headers,

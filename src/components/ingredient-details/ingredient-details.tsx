@@ -1,10 +1,10 @@
-import { useSelector } from "react-redux";
+import { useSelector } from "../../utils/hooks";
 import styles from "./ingredient-details.module.css";
 import { FC } from "react";
 
 const IngredientDetails: FC = () => {
   const selectedIngredient = useSelector(
-    (store: any) => store.ingredient.selectedIngredient
+    (store) => store.ingredient.selectedIngredient
   );
 
   if (!selectedIngredient) return null;

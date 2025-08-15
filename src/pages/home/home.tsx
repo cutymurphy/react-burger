@@ -1,20 +1,19 @@
 import { FC, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getIngredients } from "../../services/actions/ingredients";
 import { RingLoader } from "react-spinners";
 import styles from "./home.module.css";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import BurgerIngredients from "../../components/burger-ingredients";
 import BurgerConstructor from "../../components/burger-constructor";
-import { Dispatch } from "redux";
+import { getIngredients } from "../../services/actions/ingredients";
+import { useDispatch, useSelector } from "../../utils/hooks";
 
 const Home: FC = () => {
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch = useDispatch();
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
-    (store: any) => store.ingredients
+    (store) => store.ingredients
   );
-  const orderRequest = useSelector((store: any) => store.order.orderRequest);
+  const orderRequest = useSelector((store) => store.order.orderRequest);
 
   const isLoading = ingredientsRequest || orderRequest;
   const hasError = ingredientsFailed;

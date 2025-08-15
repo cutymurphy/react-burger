@@ -2,17 +2,118 @@ import toast from "react-hot-toast";
 import { request } from "../../utils/request";
 import { requestWithRefresh } from "../../utils/requestWithRefresh";
 import { ERoutes } from "../../utils/routes";
+import {
+  LOG_IN,
+  LOG_OUT,
+  SET_CAN_RESET_PASSWORD,
+  SET_TOKEN,
+  SET_USER,
+  SIGN_UP,
+} from "../constants";
+import { TProfile, TSaveProfile } from "../../pages/profile/utils";
+import { AppDispatch, AppThunk } from "../types";
+import { NavigateFunction } from "react-router-dom";
+import {
+  TEditUserData,
+  TGetUserData,
+  TLogInData,
+  TSignUpData,
+} from "../types/data";
 
-export const SIGN_UP = "SIGN_UP";
-export const LOG_IN = "LOG_IN";
-export const LOG_OUT = "LOG_OUT";
-export const SET_TOKEN = "SET_TOKEN";
-export const SET_USER = "SET_USER";
-export const SET_CAN_RESET_PASSWORD = "SET_CAN_RESET_PASSWORD";
+export interface IGetSignUpAction {
+  readonly type: typeof SIGN_UP;
+  readonly user: TProfile;
+  readonly accessToken: string;
+}
 
-export function signUp(email, password, name, navigate) {
-  return function (dispatch) {
-    request("/auth/register", {
+export interface IGetLogInAction {
+  readonly type: typeof LOG_IN;
+  readonly user: TProfile;
+  readonly accessToken: string;
+}
+
+export interface IGetLogOutAction {
+  readonly type: typeof LOG_OUT;
+}
+
+export interface IGetSetTokenAction {
+  readonly type: typeof SET_TOKEN;
+  readonly accessToken: string;
+}
+
+export interface IGetSetUserAction {
+  readonly type: typeof SET_USER;
+  readonly user: TProfile;
+}
+
+export interface IGetSetCanResetPasswordAction {
+  readonly type: typeof SET_CAN_RESET_PASSWORD;
+}
+
+export type TUserActions =
+  | IGetSignUpAction
+  | IGetLogInAction
+  | IGetLogOutAction
+  | IGetSetTokenAction
+  | IGetSetUserAction
+  | IGetSetCanResetPasswordAction;
+
+export const handleSignUp = (
+  user: TProfile,
+  accessToken: string
+): IGetSignUpAction => {
+  return {
+    type: SIGN_UP,
+    user,
+    accessToken,
+  };
+};
+
+export const handleLogIn = (
+  user: TProfile,
+  accessToken: string
+): IGetLogInAction => {
+  return {
+    type: LOG_IN,
+    user,
+    accessToken,
+  };
+};
+
+export const handleLogOut = (): IGetLogOutAction => {
+  return {
+    type: LOG_OUT,
+  };
+};
+
+export const setToken = (accessToken: string): IGetSetTokenAction => {
+  return {
+    type: SET_TOKEN,
+    accessToken,
+  };
+};
+
+export const setUser = (user: TProfile): IGetSetUserAction => {
+  return {
+    type: SET_USER,
+    user,
+  };
+};
+
+export const setCanResetPassword = (): IGetSetCanResetPasswordAction => {
+  return {
+    type: SET_CAN_RESET_PASSWORD,
+  };
+};
+
+export const signUp = (
+  email: string,
+  password: string,
+  name: string,
+  navigate: NavigateFunction
+): AppThunk => {
+  return function (dispatch: AppDispatch) {
+    request<TSignUpData>("/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -24,11 +125,7 @@ export function signUp(email, password, name, navigate) {
         const refreshToken = data.refreshToken;
         localStorage.setItem("refreshToken", refreshToken);
 
-        dispatch({
-          type: SIGN_UP,
-          user: data.user,
-          accessToken,
-        });
+        dispatch(handleSignUp(data.user, accessToken));
 
         navigate(ERoutes.main, { replace: true });
         toast.success("Вы успешно зарегистрировались");
@@ -37,11 +134,16 @@ export function signUp(email, password, name, navigate) {
         toast.error("Произошла ошибка при регистрации");
       });
   };
-}
+};
 
-export function logIn(email, password, navigate, locationState) {
-  return function (dispatch) {
-    request("/auth/login", {
+export const logIn = (
+  email: string,
+  password: string,
+  navigate: NavigateFunction,
+  locationState: any
+): AppThunk => {
+  return function (dispatch: AppDispatch) {
+    request<TLogInData>("/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -51,11 +153,7 @@ export function logIn(email, password, navigate, locationState) {
         const refreshToken = data.refreshToken;
         localStorage.setItem("refreshToken", refreshToken);
 
-        dispatch({
-          type: LOG_IN,
-          user: data.user,
-          accessToken,
-        });
+        dispatch(handleLogIn(data.user, accessToken));
 
         const from =
           locationState && locationState.fromPath
@@ -70,10 +168,10 @@ export function logIn(email, password, navigate, locationState) {
         );
       });
   };
-}
+};
 
-export function logOut(navigate) {
-  return function (dispatch) {
+export const logOut = (navigate: NavigateFunction): AppThunk => {
+  return function (dispatch: AppDispatch) {
     const token = localStorage.getItem("refreshToken");
     request("/auth/logout", {
       method: "POST",
@@ -83,20 +181,20 @@ export function logOut(navigate) {
       .then(() => {
         localStorage.removeItem("refreshToken");
         navigate(ERoutes.login, { replace: true });
-        dispatch({ type: LOG_OUT });
+        dispatch(handleLogOut());
         toast.success("Вы успешно вышли из аккаунта");
       })
       .catch(() => {
         toast.error("Ошибка при выходе из аккаунта");
       });
   };
-}
+};
 
-export function getUser(accessToken) {
-  return async function (dispatch) {
+export const getUser = (accessToken: string): AppThunk<Promise<void>> => {
+  return async function (dispatch: AppDispatch) {
     const refreshToken = localStorage.getItem("refreshToken");
     if (refreshToken) {
-      return await requestWithRefresh(
+      return await requestWithRefresh<TGetUserData>(
         "/auth/user",
         {
           method: "GET",
@@ -107,15 +205,18 @@ export function getUser(accessToken) {
         },
         dispatch
       ).then((data) => {
-        dispatch({ type: SET_USER, user: data.user });
+        dispatch(setUser(data.user));
       });
     }
   };
-}
+};
 
-export function editUser(accessToken, newUser) {
-  return function (dispatch) {
-    requestWithRefresh(
+export const editUser = (
+  accessToken: string,
+  newUser: TSaveProfile
+): AppThunk => {
+  return function (dispatch: AppDispatch) {
+    requestWithRefresh<TEditUserData>(
       "/auth/user",
       {
         method: "PATCH",
@@ -128,24 +229,27 @@ export function editUser(accessToken, newUser) {
       dispatch
     )
       .then((data) => {
-        dispatch({ type: SET_USER, user: data.user });
+        dispatch(setUser(data.user));
         toast.success("Информация успешно отредактирована");
       })
       .catch(() => {
         toast.error("Произошла ошибка при редактировании пользователя");
       });
   };
-}
+};
 
-export function handleForgotPassword(email, navigate) {
-  return function (dispatch) {
+export const handleForgotPassword = (
+  email: string,
+  navigate: NavigateFunction
+): AppThunk => {
+  return function (dispatch: AppDispatch) {
     request("/password-reset", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
     })
       .then(() => {
-        dispatch({ type: SET_CAN_RESET_PASSWORD });
+        dispatch(setCanResetPassword());
         navigate(ERoutes.resetPassword);
         toast.success("Письмо с кодом отправлено на почту");
       })
@@ -153,9 +257,13 @@ export function handleForgotPassword(email, navigate) {
         toast.error("Ошибка при отправке письма на почту");
       });
   };
-}
+};
 
-export const handleResetPassword = async (password, token, navigate) => {
+export const handleResetPassword = async (
+  password: string,
+  token: string,
+  navigate: NavigateFunction
+) => {
   try {
     await request("/password-reset/reset", {
       method: "POST",

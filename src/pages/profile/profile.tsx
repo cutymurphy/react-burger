@@ -4,7 +4,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./profile.module.css";
 import { FC, FormEvent, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { editUser } from "../../services/actions/user";
 import {
   initialEdit,
@@ -15,14 +14,14 @@ import {
   TSaveProfile,
 } from "./utils";
 import { validateField } from "../../utils/validation";
-import { Dispatch } from "redux";
+import { useDispatch, useSelector } from "../../utils/hooks";
 
 const Profile: FC = () => {
-  const dispatch: Dispatch<any> = useDispatch();
-  const { user: storeUser, accessToken } = useSelector(
-    (store: any) => store.user
-  );
-  const initialUser: TProfile = { ...storeUser, password: "" };
+  const dispatch = useDispatch();
+  const { user: storeUser, accessToken } = useSelector((store) => store.user);
+  const initialUser: TProfile = storeUser
+    ? { ...storeUser, password: "" }
+    : { ...initialInfo };
 
   const [profile, setProfile] = useState<TProfile>({ ...initialInfo });
   const [profileErrors, setProfileErrors] = useState<TProfileErrors>({});
@@ -30,6 +29,7 @@ const Profile: FC = () => {
     ...initialEdit,
   });
   const [editOpen, setEditOpen] = useState<TProfileEdit>({ ...initialEdit });
+  const isEditMode = Object.values(editedFields).some((value) => !!value);
 
   const onChange = <K extends keyof TProfile>(field: K, value: TProfile[K]) => {
     setProfile({ ...profile, [field]: value });
@@ -91,7 +91,11 @@ const Profile: FC = () => {
   }, [storeUser]);
 
   return (
-    <form className={styles.profile__form} onSubmit={handleSaveProfile}>
+    <form
+      className={styles.profile__form}
+      style={{ marginTop: isEditMode ? "-24px" : "-80px" }}
+      onSubmit={handleSaveProfile}
+    >
       <Input
         placeholder={"Имя"}
         type={"text"}
@@ -134,7 +138,7 @@ const Profile: FC = () => {
         onPointerEnterCapture={() => {}}
         onPointerLeaveCapture={() => {}}
       />
-      {Object.values(editedFields).some((value) => !!value) && (
+      {isEditMode && (
         <div className={styles.profile__btns}>
           <Button
             htmlType="button"

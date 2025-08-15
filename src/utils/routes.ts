@@ -7,5 +7,6 @@ export enum ERoutes {
   profile = "/profile",
   ingredients = "/ingredients",
   orders = "orders",
+  feed = "/feed",
   others = "*",
 }

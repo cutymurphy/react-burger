@@ -5,16 +5,15 @@ import {
 import styles from "./login.module.css";
 import { FC, FormEvent, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { logIn } from "../../services/actions/user";
 import { validateField } from "../../utils/validation";
-import { Dispatch } from "redux";
 import { initialInfo, TLoginForm } from "./types";
 import { ERoutes } from "../../utils/routes";
+import { useDispatch } from "../../utils/hooks";
 
 const Login: FC = () => {
   const navigate = useNavigate();
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch = useDispatch();
   const { state } = useLocation();
   const refreshToken = localStorage.getItem("refreshToken");
 

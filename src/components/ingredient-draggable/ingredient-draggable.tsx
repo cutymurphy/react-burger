@@ -3,26 +3,25 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./ingredient-draggable.module.css";
-import { useDispatch } from "react-redux";
-import { DECREASE_INGREDIENT_COUNT } from "../../services/actions/ingredients";
+import { decreaseIngredientCount } from "../../services/actions/ingredients";
 import {
-  DELETE_INGREDIENT,
-  MOVE_INGREDIENT,
+  deleteIngredient,
+  moveIngredient,
 } from "../../services/actions/builder";
-import { SELECT_INGREDIENT } from "../../services/actions/ingredient-details";
 import { useDrag, useDrop } from "react-dnd";
 import { FC, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IIngredientDraggable, TDragItem } from "./types";
 import { TIngredient } from "../../utils/types";
-import { Dispatch } from "redux";
 import { ERoutes } from "../../utils/routes";
+import { selectIngredient } from "../../services/actions/ingredient-details";
+import { useDispatch } from "../../utils/hooks";
 
 const IngredientDraggable: FC<IIngredientDraggable> = ({
   ingredient,
   index,
 }) => {
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const ref = useRef<HTMLLIElement>(null);
@@ -50,7 +49,7 @@ const IngredientDraggable: FC<IIngredientDraggable> = ({
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
 
-      moveIngredient(dragIndex, hoverIndex);
+      handleMoveIngredient(dragIndex, hoverIndex);
 
       item.index = hoverIndex;
     },
@@ -58,28 +57,21 @@ const IngredientDraggable: FC<IIngredientDraggable> = ({
 
   drag(drop(ref));
 
-  const moveIngredient = (dragIndex: number, hoverIndex: number) => {
+  const handleMoveIngredient = (dragIndex: number, hoverIndex: number) => {
     if (dragIndex === hoverIndex) return;
-    dispatch({
-      type: MOVE_INGREDIENT,
-      fromIndex: dragIndex,
-      toIndex: hoverIndex,
-    });
+    dispatch(moveIngredient(dragIndex, hoverIndex));
   };
 
   const onIngredientClick = (ingredient: TIngredient) => {
-    dispatch({ type: SELECT_INGREDIENT, ingredient });
+    dispatch(selectIngredient(ingredient));
     navigate(`${ERoutes.ingredients}/${ingredient._id}`, {
       state: { background: location },
     });
   };
 
-  const deleteIngredient = () => {
-    dispatch({
-      type: DELETE_INGREDIENT,
-      ingredientUniqueId: ingredient.uniqueId,
-    });
-    dispatch({ type: DECREASE_INGREDIENT_COUNT, ingredientId: ingredient._id });
+  const handleDeleteIngredient = () => {
+    dispatch(deleteIngredient(ingredient.uniqueId || ""));
+    dispatch(decreaseIngredientCount(ingredient._id));
   };
 
   return (
@@ -99,7 +91,7 @@ const IngredientDraggable: FC<IIngredientDraggable> = ({
           text={ingredient.name}
           price={ingredient.price}
           thumbnail={ingredient.image_mobile}
-          handleClose={deleteIngredient}
+          handleClose={handleDeleteIngredient}
         />
       </div>
     </li>

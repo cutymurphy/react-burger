@@ -1,0 +1,16 @@
+.details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 40px;
+}
+
+.details__number {
+  text-shadow: var(--digits-glow);
+}
+
+.details__image {
+  width: 120px;
+  height: 120px;
+  cursor: pointer;
+}
