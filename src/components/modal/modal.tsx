@@ -23,14 +23,20 @@ const Modal: FC<IModal> = ({ children, onClose, title }) => {
 
   return createPortal(
     <ModalOverlay onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={styles.modal}
+        onClick={(e) => e.stopPropagation()}
+        data-testid="modal"
+      >
         <div className={`${styles.modal__header} mt-10 ml-10 mr-10`}>
           {title && <p className="text text_type_main-large">{title}</p>}
-          <CloseIcon
-            type="primary"
-            className={styles.modal__close_icon}
+          <div
             onClick={onClose}
-          />
+            className={styles.modal__close_icon}
+            data-testid="modal-close"
+          >
+            <CloseIcon type="primary" />
+          </div>
         </div>
         {children}
       </div>

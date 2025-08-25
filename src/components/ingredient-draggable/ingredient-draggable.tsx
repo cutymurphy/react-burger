@@ -20,6 +20,7 @@ import { useDispatch } from "../../utils/hooks";
 const IngredientDraggable: FC<IIngredientDraggable> = ({
   ingredient,
   index,
+  "data-testid": testId,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ const IngredientDraggable: FC<IIngredientDraggable> = ({
   };
 
   return (
-    <li className={styles.constructor__item} ref={ref}>
+    <li className={styles.constructor__item} ref={ref} data-testid={testId}>
       <DragIcon type="primary" className={styles.constructor__drag} />
       <div
         onClick={(e) => {

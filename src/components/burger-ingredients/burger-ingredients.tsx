@@ -112,10 +112,11 @@ const BurgerIngredients: FC = () => {
             </p>
             <ul className={`${styles.ingredients_grid} pl-4 pr-4 mb-10`}>
               {items.map((item: TIngredient) => (
-                <li key={item._id}>
+                <li key={item._id} data-testid={`ingredient-${item.type}`}>
                   <BurgerIngredient
                     ingredient={item}
                     onClick={() => onIngredientClick(item)}
+                    data-testid="ingredient-card"
                   />
                 </li>
               ))}

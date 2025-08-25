@@ -4,7 +4,11 @@ import { IModalOverlay } from "./types";
 
 const ModalOverlay: FC<IModalOverlay> = ({ children, onClick }) => {
   return (
-    <div className={styles.overlay} onClick={onClick}>
+    <div
+      className={styles.overlay}
+      onClick={onClick}
+      data-testid="modal-overlay"
+    >
       {children}
     </div>
   );
