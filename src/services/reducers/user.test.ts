@@ -7,15 +7,9 @@ import {
   SET_USER,
   SIGN_UP,
 } from "../constants";
-import { userReducer } from "./user";
+import { initialUser, userReducer } from "./user";
 
 describe("user reducer", () => {
-  const initialState = {
-    user: null,
-    accessToken: "",
-    canResetPassword: false,
-  };
-
   const testUser: TProfile = {
     name: "Darya Sushkova",
     email: "dasha.030105@gmail.com",
@@ -25,18 +19,18 @@ describe("user reducer", () => {
   const testAccessToken = "429wejehjqw238X";
 
   it("should return the initial state", () => {
-    expect(userReducer(undefined, { type: "" } as any)).toEqual(initialState);
+    expect(userReducer(undefined, { type: "" } as any)).toEqual(initialUser);
   });
 
   it("should handle LOG_IN", () => {
     expect(
-      userReducer(initialState, {
+      userReducer(initialUser, {
         type: LOG_IN,
         user: testUser,
         accessToken: testAccessToken,
       })
     ).toEqual({
-      ...initialState,
+      ...initialUser,
       user: testUser,
       accessToken: testAccessToken,
     });
@@ -44,13 +38,13 @@ describe("user reducer", () => {
 
   it("should handle SIGN_UP", () => {
     expect(
-      userReducer(initialState, {
+      userReducer(initialUser, {
         type: SIGN_UP,
         user: testUser,
         accessToken: testAccessToken,
       })
     ).toEqual({
-      ...initialState,
+      ...initialUser,
       user: testUser,
       accessToken: testAccessToken,
     });
@@ -95,23 +89,23 @@ describe("user reducer", () => {
 
   it("should handle SET_USER", () => {
     expect(
-      userReducer(initialState, {
+      userReducer(initialUser, {
         type: SET_USER,
         user: testUser,
       })
     ).toEqual({
-      ...initialState,
+      ...initialUser,
       user: testUser,
     });
   });
 
   it("should handle SET_CAN_RESET_PASSWORD", () => {
     expect(
-      userReducer(initialState, {
+      userReducer(initialUser, {
         type: SET_CAN_RESET_PASSWORD,
       })
     ).toEqual({
-      ...initialState,
+      ...initialUser,
       canResetPassword: true,
     });
   });

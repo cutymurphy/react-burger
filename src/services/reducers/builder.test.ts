@@ -1,4 +1,4 @@
-import { builderReducer } from "./builder";
+import { builderReducer, initialBuilder } from "./builder";
 import {
   ADD_INGREDIENT,
   CHANGE_BUN,
@@ -58,10 +58,9 @@ describe("builder reducer", () => {
   };
 
   it("should return the initial state", () => {
-    expect(builderReducer(undefined, { type: "" } as any)).toEqual({
-      selectedIngredients: [],
-      mainBun: null,
-    });
+    expect(builderReducer(undefined, { type: "" } as any)).toEqual(
+      initialBuilder
+    );
   });
 
   it("should handle ADD_INGREDIENT", () => {
@@ -128,9 +127,6 @@ describe("builder reducer", () => {
         },
         { type: CLEAR_CONSTRUCTOR }
       )
-    ).toEqual({
-      selectedIngredients: [],
-      mainBun: null,
-    });
+    ).toEqual(initialBuilder);
   });
 });

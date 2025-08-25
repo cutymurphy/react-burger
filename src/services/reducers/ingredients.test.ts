@@ -1,4 +1,4 @@
-import { ingredientsReducer } from "./ingredients";
+import { ingredientsReducer, initialIngredients } from "./ingredients";
 import {
   CLEAR_INGREDIENTS_COUNT,
   DECREASE_INGREDIENT_COUNT,
@@ -40,23 +40,17 @@ describe("ingredients reducer", () => {
     __v: 2,
   };
 
-  const initialState = {
-    ingredients: [],
-    ingredientsRequest: false,
-    ingredientsFailed: false,
-  };
-
   it("should return the initial state", () => {
     expect(ingredientsReducer(undefined, { type: "" } as any)).toEqual(
-      initialState
+      initialIngredients
     );
   });
 
   it("should handle GET_INGREDIENTS_REQUEST", () => {
     expect(
-      ingredientsReducer(initialState, { type: GET_INGREDIENTS_REQUEST })
+      ingredientsReducer(initialIngredients, { type: GET_INGREDIENTS_REQUEST })
     ).toEqual({
-      ...initialState,
+      ...initialIngredients,
       ingredientsRequest: true,
       ingredientsFailed: false,
     });
@@ -83,7 +77,7 @@ describe("ingredients reducer", () => {
     const newIngredients = [ingredient1, ingredient2];
 
     expect(
-      ingredientsReducer(initialState, {
+      ingredientsReducer(initialIngredients, {
         type: GET_INGREDIENTS_SUCCESS,
         ingredients: newIngredients,
       })

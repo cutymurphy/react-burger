@@ -14,7 +14,7 @@ type TAllOrdersState = {
   ordersFailed: boolean;
 };
 
-const initialOrders: TAllOrdersState = {
+export const initialOrders: TAllOrdersState = {
   orders: [],
   total: 0,
   totalToday: 0,

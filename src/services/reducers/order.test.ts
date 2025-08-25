@@ -5,30 +5,21 @@ import {
   POST_ORDER_REQUEST,
   POST_ORDER_SUCCESS,
 } from "../constants";
-import { orderReducer } from "./order";
+import { initialOrder, orderReducer } from "./order";
 
 describe("order reducer", () => {
-  const initialState = {
-    order: {
-      ...orderData,
-      number: null,
-    },
-    orderFailed: false,
-    orderRequest: false,
-  };
-
   const testOrder = {
     ...orderData,
     number: 14343,
   };
 
   it("should return the initial state", () => {
-    expect(orderReducer(undefined, { type: "" } as any)).toEqual(initialState);
+    expect(orderReducer(undefined, { type: "" } as any)).toEqual(initialOrder);
   });
 
   it("should handle POST_ORDER_REQUEST", () => {
-    expect(orderReducer(initialState, { type: POST_ORDER_REQUEST })).toEqual({
-      ...initialState,
+    expect(orderReducer(initialOrder, { type: POST_ORDER_REQUEST })).toEqual({
+      ...initialOrder,
       orderFailed: false,
       orderRequest: true,
     });
@@ -53,7 +44,7 @@ describe("order reducer", () => {
 
   it("should handle POST_ORDER_SUCCESS", () => {
     expect(
-      orderReducer(initialState, {
+      orderReducer(initialOrder, {
         type: POST_ORDER_SUCCESS,
         orderNumber: 1000,
       })

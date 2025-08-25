@@ -6,7 +6,7 @@ type TOrderDetailsState = {
   selectedOrder: TOrder | null;
 };
 
-const initialOrder: TOrderDetailsState = {
+export const initialOrder: TOrderDetailsState = {
   selectedOrder: null,
 };
 

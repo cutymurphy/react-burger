@@ -13,7 +13,7 @@ type TBuilderState = {
   mainBun: null | TIngredient;
 };
 
-const initialBuilder: TBuilderState = {
+export const initialBuilder: TBuilderState = {
   selectedIngredients: [],
   mainBun: null,
 };

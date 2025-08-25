@@ -1,4 +1,4 @@
-import { orderDetailsReducer } from "./order-details";
+import { initialOrder, orderDetailsReducer } from "./order-details";
 import { SELECT_ORDER, UNSELECT_ORDER } from "../constants";
 import { EStatus, TOrder } from "../../utils/types";
 
@@ -13,9 +13,9 @@ describe("orderDetails reducer", () => {
   };
 
   it("should return the initial state", () => {
-    expect(orderDetailsReducer(undefined, { type: "" } as any)).toEqual({
-      selectedOrder: null,
-    });
+    expect(orderDetailsReducer(undefined, { type: "" } as any)).toEqual(
+      initialOrder
+    );
   });
 
   it("should handle SELECT_ORDER", () => {
@@ -39,8 +39,6 @@ describe("orderDetails reducer", () => {
           type: UNSELECT_ORDER,
         }
       )
-    ).toEqual({
-      selectedOrder: null,
-    });
+    ).toEqual(initialOrder);
   });
 });

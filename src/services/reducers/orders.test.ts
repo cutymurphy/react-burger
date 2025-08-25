@@ -4,15 +4,9 @@ import {
   GET_ORDERS_REQUEST,
   GET_ORDERS_SUCCESS,
 } from "../constants";
-import { ordersReducer } from "./orders";
+import { initialOrders, ordersReducer } from "./orders";
 
 describe("orders reducer", () => {
-  const initialState = {
-    orders: [],
-    ordersRequest: false,
-    ordersFailed: false,
-  };
-
   const testOrders: TOrder[] = [
     {
       ingredients: [],
@@ -33,12 +27,14 @@ describe("orders reducer", () => {
   ];
 
   it("should return the initial state", () => {
-    expect(ordersReducer(undefined, { type: "" } as any)).toEqual(initialState);
+    expect(ordersReducer(undefined, { type: "" } as any)).toEqual(
+      initialOrders
+    );
   });
 
   it("should handle GET_ORDERS_REQUEST", () => {
-    expect(ordersReducer(initialState, { type: GET_ORDERS_REQUEST })).toEqual({
-      ...initialState,
+    expect(ordersReducer(initialOrders, { type: GET_ORDERS_REQUEST })).toEqual({
+      ...initialOrders,
       ordersFailed: false,
       ordersRequest: true,
     });
@@ -63,7 +59,7 @@ describe("orders reducer", () => {
 
   it("should handle GET_ORDERS_SUCCESS", () => {
     expect(
-      ordersReducer(initialState, {
+      ordersReducer(initialOrders, {
         type: GET_ORDERS_SUCCESS,
         orders: testOrders,
       })

@@ -1,3 +1,5 @@
+import { localUrl } from "../../src/utils/localUrl";
+
 describe("Burger Constructor Page", () => {
   beforeEach(() => {
     cy.intercept("GET", "/api/ingredients", { fixture: "ingredients.json" }).as(
@@ -12,7 +14,7 @@ describe("Burger Constructor Page", () => {
       win.localStorage.setItem("accessToken", "mockedAccessToken");
     });
 
-    cy.visit("http://localhost:3000");
+    cy.visit(localUrl);
     cy.wait("@getIngredients");
   });
 

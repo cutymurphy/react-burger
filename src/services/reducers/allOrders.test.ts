@@ -1,4 +1,4 @@
-import { allOrdersReducer } from "../reducers/allOrders";
+import { allOrdersReducer, initialOrders } from "../reducers/allOrders";
 import {
   GET_ALL_ORDERS_REQUEST,
   GET_ALL_ORDERS_ERROR,
@@ -7,14 +7,6 @@ import {
 import { EStatus, TOrder } from "../../utils/types";
 
 describe("allOrders reducer", () => {
-  const initialState = {
-    orders: [],
-    total: 0,
-    totalToday: 0,
-    ordersRequest: false,
-    ordersFailed: false,
-  };
-
   const orders: TOrder[] = [
     {
       ingredients: [],
@@ -36,17 +28,17 @@ describe("allOrders reducer", () => {
 
   it("should return the initial state", () => {
     expect(allOrdersReducer(undefined, { type: "" } as any)).toEqual(
-      initialState
+      initialOrders
     );
   });
 
   it("should handle GET_ALL_ORDERS_REQUEST", () => {
     expect(
-      allOrdersReducer(initialState, {
+      allOrdersReducer(initialOrders, {
         type: GET_ALL_ORDERS_REQUEST,
       })
     ).toEqual({
-      ...initialState,
+      ...initialOrders,
       ordersRequest: true,
       ordersFailed: false,
     });
@@ -56,7 +48,7 @@ describe("allOrders reducer", () => {
     expect(
       allOrdersReducer(
         {
-          ...initialState,
+          ...initialOrders,
           orders,
           total: 1000,
           totalToday: 50,
@@ -76,7 +68,7 @@ describe("allOrders reducer", () => {
 
   it("should handle GET_ALL_ORDERS_SUCCESS", () => {
     expect(
-      allOrdersReducer(initialState, {
+      allOrdersReducer(initialOrders, {
         type: GET_ALL_ORDERS_SUCCESS,
         allOrders: orders,
         total: 100,

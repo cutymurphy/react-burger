@@ -1,5 +1,5 @@
 import { TIngredient } from "../../utils/types";
-import { ingredientReducer } from "./ingredient-details";
+import { ingredientReducer, initialIngredient } from "./ingredient-details";
 import { SELECT_INGREDIENT, UNSELECT_INGREDIENT } from "../constants";
 
 describe("ingredient details reducer", () => {
@@ -19,9 +19,9 @@ describe("ingredient details reducer", () => {
   };
 
   it("should return the initial state", () => {
-    expect(ingredientReducer(undefined, { type: "" } as any)).toEqual({
-      selectedIngredient: null,
-    });
+    expect(ingredientReducer(undefined, { type: "" } as any)).toEqual(
+      initialIngredient
+    );
   });
 
   it("should handle SELECT_INGREDIENT", () => {
@@ -45,8 +45,6 @@ describe("ingredient details reducer", () => {
           type: UNSELECT_INGREDIENT,
         }
       )
-    ).toEqual({
-      selectedIngredient: null,
-    });
+    ).toEqual(initialIngredient);
   });
 });

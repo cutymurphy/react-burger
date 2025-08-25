@@ -15,7 +15,7 @@ type TUserState = {
   canResetPassword: boolean;
 };
 
-const initialUser: TUserState = {
+export const initialUser: TUserState = {
   user: null,
   accessToken: "",
   canResetPassword: false,
