@@ -1,0 +1,35 @@
+{
+    "name": "Space флюоресцентный бургер",
+    "order": {
+        "createdAt": "2025-08-25T10:41:25.972Z",
+        "ingredients": [
+            {
+                "calories": 643,
+                "carbohydrates": 85,
+                "fat": 26,
+                "image": "https://code.s3.yandex.net/react/code/bun-01.png",
+                "image_large": "https://code.s3.yandex.net/react/code/bun-01-large.png",
+                "image_mobile": "https://code.s3.yandex.net/react/code/bun-01-mobile.png",
+                "name": "Флюоресцентная булка R2-D3",
+                "price": 988,
+                "proteins": 44,
+                "type": "bun",
+                "__v": 0,
+                "_id": "643d69a5c3f7b9001cfa093d"
+            }
+        ],
+        "name": "Space флюоресцентный бургер",
+        "number": 87149,
+        "owner": {
+            "name": "dasha)2003",
+            "email": "dasha.030105@gmail.com",
+            "createdAt": "2025-07-11T16:58:26.440Z",
+            "updatedAt": "2025-08-11T11:44:58.167Z"
+        },
+        "price": 2056,
+        "status": "done",
+        "updatedAt": "2025-08-25T10:41:26.970Z",
+        "_id": "68ac3dd5673086001ba84987"
+    },
+    "success": true
+}

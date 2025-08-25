@@ -115,11 +115,16 @@ const BurgerConstructor: FC = () => {
       <article
         className={`${styles.constructor__container} mb-10`}
         ref={targetRef}
+        data-testid="constructor"
       >
         {mainBun || selectedIngredients.length > 0 ? (
           <>
             {mainBun && (
-              <div onClick={() => onIngredientClick(mainBun)} className="pr-2">
+              <div
+                onClick={() => onIngredientClick(mainBun)}
+                className="pr-2"
+                data-testid="constructor-bun-top"
+              >
                 <ConstructorElement
                   type="top"
                   isLocked={true}
@@ -147,6 +152,7 @@ const BurgerConstructor: FC = () => {
                       <IngredientDraggable
                         ingredient={ingredient}
                         index={index}
+                        data-testid="constructor-item"
                       />
                     </CSSTransition>
                   )
@@ -154,7 +160,11 @@ const BurgerConstructor: FC = () => {
               </TransitionGroup>
             </ul>
             {mainBun && (
-              <div onClick={() => onIngredientClick(mainBun)} className="pr-2">
+              <div
+                onClick={() => onIngredientClick(mainBun)}
+                className="pr-2"
+                data-testid="constructor-bun-bottom"
+              >
                 <ConstructorElement
                   type="bottom"
                   isLocked={true}

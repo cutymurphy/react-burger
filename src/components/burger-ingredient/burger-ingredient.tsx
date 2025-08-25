@@ -8,7 +8,11 @@ import { FC, useRef } from "react";
 import { IBurgerIngredient } from "./types";
 import { useSelector } from "../../utils/hooks";
 
-const BurgerIngredient: FC<IBurgerIngredient> = ({ ingredient, onClick }) => {
+const BurgerIngredient: FC<IBurgerIngredient> = ({
+  ingredient,
+  onClick,
+  "data-testid": testId,
+}) => {
   const [, ingredientRef] = useDrag({
     type: "ingredient",
     item: { id: ingredient._id, type: ingredient.type },
@@ -21,7 +25,11 @@ const BurgerIngredient: FC<IBurgerIngredient> = ({ ingredient, onClick }) => {
   ingredientRef(imgRef);
 
   return (
-    <article className={styles.ingredient} onClick={onClick}>
+    <article
+      className={styles.ingredient}
+      onClick={onClick}
+      data-testid={testId}
+    >
       <img
         alt={ingredient.name}
         src={ingredient.image}
